@@ -492,47 +492,73 @@
   }
 
   // Convert Pinecone's markdown-ish answer into our HTML structure.
-  // The Assistant tends to produce: [intro paragraphs] --- ### Name (Episode X) [body] --- ### Name (Episode X) [body] ...
+  // Pinecone can output guest sections in multiple shapes:
+  //   ### Name (Episode X)\n body
+  //   **Name (Episode X)**\n body
+  //   **Name (Episode X)**: body
+  // Sections may be separated by --- horizontal rules OR just by guest headers.
   function formatAnswer(text) {
     if (!text) return '';
     var safe = escapeHtml(text);
 
-    // Split on horizontal rule separators (--- on its own line, or surrounded by newlines)
-    var sections = safe.split(/\n\s*-{3,}\s*\n|\n\s*\*{3,}\s*\n/);
+    // Normalize all guest-header markers to a single sentinel so we can split on it
+    // Matches lines like: "**Name (Episode 5)**", "### Name (Episode 5)", "**Name (Ep. 5)**", etc.
+    var SENTINEL = 'GUEST';
+    safe = safe.replace(
+      /(?:^|\n)(?:\*\*|#{2,3}\s*\*?\*?)\s*([^\n*#()]+?)\s*\(\s*(?:Episode|Ep\.?)\s*([0-9]+)\s*\)\s*(?:\*\*)?\s*[:.\-—]?\s*\n?/gi,
+      function(_, name, ep) {
+        return '\n' + SENTINEL + name.trim() + '|' + ep + SENTINEL + '\n';
+      }
+    );
+
+    // Strip horizontal rule separators entirely (we use guest-block borders instead)
+    safe = safe.replace(/\n\s*-{3,}\s*\n/g, '\n\n');
+    safe = safe.replace(/\n\s*\*{3,}\s*\n/g, '\n\n');
+
+    var parts = safe.split(SENTINEL);
 
     var html = '';
-    sections.forEach(function(section, idx){
-      section = section.trim();
-      if (!section) return;
-
-      // Check if this section starts with a guest header like "### Name (Episode X)" or "### Name Lastname (Ep. X)"
-      var headerMatch = section.match(/^#{2,3}\s*([^\n]+?)\s*\(\s*(Episode|Ep\.?)\s*([0-9]+)\s*\)\s*\n?([\s\S]*)$/i);
-
-      if (headerMatch) {
-        var name = headerMatch[1].trim();
-        var epNum = headerMatch[3];
-        var body = headerMatch[4].trim();
-        var bodyParas = body.split(/\n\n+/).map(function(p){
-          return '<p>' + inlineFormat(p.replace(/\n/g, ' ')) + '</p>';
-        }).join('');
+    var inGuestBlock = false;
+    parts.forEach(function(part, idx){
+      if (idx % 2 === 1) {
+        // Odd index = guest header captured between sentinels: "Name|EpNum"
+        var pieces = part.split('|');
+        var name = pieces[0];
+        var epNum = pieces[1];
         html += '<div class="guest-block">' +
-          '<div class="guest-header">' + name + '<span class="ep">EP. ' + epNum + '</span></div>' +
-          bodyParas +
-        '</div>';
-      } else {
-        // Strip any leftover ### headers without episode tags
-        section = section.replace(/^#{1,3}\s+/gm, '');
-        var paras = section.split(/\n\n+/);
-        var wrappedClass = (idx === 0) ? 'answer-intro' : 'answer-intro';
-        paras.forEach(function(p){
-          var inner = inlineFormat(p.replace(/\n/g, ' ')).trim();
-          if (inner) {
-            html += '<div class="' + wrappedClass + '">' + inner + '</div>';
-          }
-        });
+          '<div class="guest-header">' + name + '<span class="ep">EP. ' + epNum + '</span></div>';
+        inGuestBlock = true;
+        return;
+      }
+
+      // Even index = body content (either intro before first guest, or body after a guest header)
+      var content = part.trim();
+      // Strip stray markdown headers and stray bold-only-name lines
+      content = content.replace(/^#{1,3}\s+.*$/gm, '');
+      // Strip orphan ** at line start/end
+      content = content.replace(/^\*+|\*+$/gm, '');
+
+      var paras = content.split(/\n\n+/);
+      paras.forEach(function(p){
+        var inner = inlineFormat(p.replace(/\n/g, ' ').trim());
+        // Also strip leading orphan ** that survived
+        inner = inner.replace(/^\s*\*+\s*/, '');
+        if (!inner) return;
+        if (inGuestBlock) {
+          html += '<p>' + inner + '</p>';
+        } else {
+          html += '<div class="answer-intro">' + inner + '</div>';
+        }
+      });
+
+      // Close guest block at the start of the next iteration if we were in one
+      if (inGuestBlock && idx < parts.length - 1) {
+        html += '</div>';
+        inGuestBlock = false;
       }
     });
 
+    if (inGuestBlock) html += '</div>';
     return html;
   }
 
