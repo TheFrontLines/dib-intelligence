@@ -338,21 +338,61 @@
   }
 
   /* Loading indicator */
+  .progress-bar {
+    height: 3px;
+    background: rgba(232, 84, 32, 0.15);
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    background: var(--orange);
+    animation: progress-slide 1.6s ease-in-out infinite;
+  }
+  @keyframes progress-slide {
+    0% { left: -40%; }
+    100% { left: 100%; }
+  }
+
   .loading {
-    padding: 38px 28px;
+    padding: 42px 28px;
     text-align: center;
     color: var(--text-muted);
     font-size: 14px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
+  }
+  .loading-status {
+    color: var(--white);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 15px;
+    min-height: 22px;
+    transition: opacity 0.2s ease;
+  }
+  .loading-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+  .loading-meta .elapsed {
+    color: var(--orange);
+    font-weight: 700;
   }
   .loading .dots {
     display: inline-flex;
     gap: 6px;
     margin-left: 10px;
+    vertical-align: middle;
   }
   .loading .dots span {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--orange);
     animation: bounce 1.4s infinite ease-in-out both;
@@ -440,12 +480,12 @@
   <div class="chips-wrap">
     <div class="chips-label">Try Asking</div>
     <div class="chips">
-      <button class="chip" data-q="Who are the most impressive founders in the catalog?">Most impressive founders</button>
-      <button class="chip" data-q="What's the biggest mistake early-stage defense companies make?">Biggest early-stage mistakes</button>
-      <button class="chip" data-q="How do founders navigate the relationship with primes?">Navigating prime contractors</button>
-      <button class="chip" data-q="What advice do operators give about hiring in defense tech?">Hiring in defense tech</button>
-      <button class="chip" data-q="How are guests thinking about AI in defense?">AI in defense</button>
-      <button class="chip" data-q="What capital strategies work best for DIB startups?">Capital for DIB startups</button>
+      <button class="chip" data-q="How do I win my first DoD contract?">Winning your first DoD contract</button>
+      <button class="chip" data-q="How are founders thinking about AI and autonomy in defense?">AI &amp; autonomy in defense</button>
+      <button class="chip" data-q="How do early-stage defense companies survive the valley of death?">Surviving the valley of death</button>
+      <button class="chip" data-q="How do founders navigate working with prime contractors?">Working with primes</button>
+      <button class="chip" data-q="What capital strategies work for defense companies that need to stay clean for DoD work?">Capital that doesn't conflict</button>
+      <button class="chip" data-q="What separates defense startups that succeed from those that fail in year one?">What kills defense startups</button>
     </div>
   </div>
 
@@ -577,6 +617,61 @@
     return '<div class="citations"><div class="citations-label">Sources from the catalog</div>' + inner + '</div>';
   }
 
+  // Sequenced status messages, each shown for some duration so users see real activity.
+  // Pinecone Assistant typically takes 25-45s for complex queries that synthesize many sources.
+  var STATUS_STEPS = [
+    { at: 0,  text: 'Searching the catalog' },
+    { at: 4,  text: 'Reading the transcripts that match' },
+    { at: 10, text: 'Pulling the strongest quotes' },
+    { at: 18, text: 'Synthesizing across guests' },
+    { at: 28, text: 'Putting your answer together' },
+    { at: 42, text: 'Complex question &mdash; one more moment' },
+    { at: 60, text: 'Still working &mdash; this is a deep one' }
+  ];
+
+  var loadingTimer = null;
+
+  function startLoadingUI() {
+    var html =
+      '<div class="progress-bar"></div>' +
+      '<div class="loading">' +
+        '<div class="loading-status" id="loading-status">Searching the catalog' +
+          '<span class="dots"><span></span><span></span><span></span></span>' +
+        '</div>' +
+        '<div class="loading-meta">Elapsed <span class="elapsed" id="loading-elapsed">0s</span></div>' +
+      '</div>';
+    contentEl.innerHTML = html;
+
+    var startedAt = Date.now();
+    var statusEl = document.getElementById('loading-status');
+    var elapsedEl = document.getElementById('loading-elapsed');
+
+    if (loadingTimer) clearInterval(loadingTimer);
+    loadingTimer = setInterval(function(){
+      if (!statusEl || !elapsedEl) return;
+      var s = Math.floor((Date.now() - startedAt) / 1000);
+      elapsedEl.textContent = s + 's';
+      // Find the latest step <= elapsed
+      for (var i = STATUS_STEPS.length - 1; i >= 0; i--) {
+        if (s >= STATUS_STEPS[i].at) {
+          var newText = STATUS_STEPS[i].text +
+            '<span class="dots"><span></span><span></span><span></span></span>';
+          if (statusEl.innerHTML !== newText) {
+            statusEl.innerHTML = newText;
+          }
+          break;
+        }
+      }
+    }, 500);
+  }
+
+  function stopLoadingUI() {
+    if (loadingTimer) {
+      clearInterval(loadingTimer);
+      loadingTimer = null;
+    }
+  }
+
   async function askQuestion(q) {
     if (!q || !q.trim()) return;
     searchInput.value = q;
@@ -585,9 +680,7 @@
     introEl.classList.add('hidden');
     answerWrap.classList.remove('empty');
     questionEl.textContent = q;
-    contentEl.innerHTML =
-      '<div class="loading">Searching the catalog' +
-      '<span class="dots"><span></span><span></span><span></span></span></div>';
+    startLoadingUI();
 
     try {
       var res = await fetch(API_ENDPOINT, {
@@ -595,6 +688,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: q })
       });
+
+      stopLoadingUI();
 
       if (!res.ok) {
         var err = await res.json().catch(function(){ return {}; });
@@ -611,6 +706,7 @@
       '</div>';
       contentEl.innerHTML = answerHtml;
     } catch (err) {
+      stopLoadingUI();
       contentEl.innerHTML =
         '<div class="error"><strong>Couldn’t reach the catalog.</strong> ' +
         escapeHtml(String(err)) +
