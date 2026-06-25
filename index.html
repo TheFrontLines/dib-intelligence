@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIB Crowd Intelligence | Ask 100+ DIB founders, CEOs &amp; builders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #1A1A1A;
+    --black-2: #141414;
+    --black-3: #0E0E0E;
+    --black-card: #1F1F1F;
+    --white: #FFFFFF;
+    --text-headline: #FFFFFF;
+    --text-body: #C8C6BE;
+    --text-muted: #8A8985;
+    --text-ghost: #5A5955;
+    --orange: #E85420;
+    --orange-hover: #FF6B36;
+    --orange-soft: rgba(232, 84, 32, 0.12);
+    --border: #2A2A2A;
+    --border-strong: #3A3A3A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    background: var(--black);
+    color: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    font-size: 17px;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  /* ===== LOGO ===== */
+  .logo-wrap { display: inline-flex; align-items: baseline; gap: 4px; }
+  .logo-slashes {
+    color: var(--orange);
+    font-style: italic;
+    font-weight: 900;
+    font-size: 32px;
+    letter-spacing: -3px;
+    line-height: 1;
+    transform: skewX(-6deg);
+    display: inline-block;
+  }
+  .logo-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 0.005em;
+    margin-left: 2px;
+  }
+  .logo-tm {
+    font-size: 9px; color: var(--white); margin-left: 1px;
+    vertical-align: super; font-weight: 600; letter-spacing: 0;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 50;
+    padding: 28px 48px;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .nav-links { display: flex; align-items: center; gap: 44px; }
+  .nav-links a {
+    font-size: 16px; font-weight: 500; color: var(--white);
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.15s ease;
+  }
+  .nav-cta:hover { background: var(--orange-hover) !important; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 880px;
+    padding: 120px 48px 120px;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png');
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(0.55) brightness(0.4) contrast(1.1);
+    opacity: 0.5;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(20,20,20,0.55) 0%, rgba(20,20,20,0.92) 80%, rgba(20,20,20,1) 100%);
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1300px; margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 16px; font-weight: 700; color: var(--orange);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    display: inline-flex; align-items: baseline; gap: 8px;
+  }
+  .hero-eyebrow .e-slash {
+    font-style: italic; font-weight: 900; letter-spacing: -2px;
+    transform: skewX(-6deg); display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 80px;
+    font-weight: 800;
+    line-height: 1.0;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    margin-bottom: 32px;
+    max-width: 1200px;
+  }
+  .hero-sub {
+    font-size: 21px;
+    color: var(--text-body);
+    line-height: 1.55;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 0 48px;
+  }
+  .hero-sub strong { color: var(--white); font-weight: 600; }
+
+  /* ===== HERO SEARCH ===== */
+  .search-wrap { max-width: 720px; }
+  .search-box {
+    display: flex; align-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 6px 6px 6px 22px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    backdrop-filter: blur(8px);
+  }
+  .search-box:focus-within {
+    border-color: var(--orange);
+    background: rgba(255,255,255,0.08);
+  }
+  .search-icon {
+    color: var(--orange); font-style: italic; font-weight: 900;
+    font-size: 22px; letter-spacing: -3px; margin-right: 14px;
+    transform: skewX(-6deg);
+  }
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none; outline: none;
+    color: var(--white);
+    font-size: 17px;
+    font-family: inherit;
+    padding: 16px 0;
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-btn {
+    background: var(--orange);
+    color: var(--white);
+    padding: 14px 28px;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background 0.15s ease;
+  }
+  .search-btn:hover { background: var(--orange-hover); }
+
+  .suggestion-label {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 600;
+    margin: 28px 0 14px;
+  }
+  .suggestions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    display: inline-flex; align-items: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-strong);
+    color: var(--text-body);
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .chip:hover {
+    background: var(--orange-soft);
+    border-color: var(--orange);
+    color: var(--white);
+  }
+
+  /* ===== DOTTED DIVIDER ===== */
+  .dotted-divider {
+    height: 2px;
+    background-image: radial-gradient(circle, var(--text-ghost) 0.9px, transparent 1.2px);
+    background-size: 8px 2px;
+    background-repeat: repeat-x;
+    margin: 0 auto;
+    max-width: 1100px;
+  }
+
+  /* ===== SECTIONS ===== */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 32px; text-align: center; }
+  .container-wide { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  section.body-section { padding: 110px 0; }
+
+  .section-title-orange {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--orange);
+    line-height: 1.2;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+  .section-title-white {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.025em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .section-body {
+    font-size: 19px;
+    color: var(--text-body);
+    line-height: 1.65;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .section-body .accent { color: var(--orange); font-weight: 700; }
+  .section-body strong { color: var(--white); font-weight: 600; }
+
+  /* ===== STATS ROW ===== */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .stat-card {
+    text-align: center;
+    padding: 36px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--black-2);
+  }
+  .stat-num {
+    font-size: 56px; font-weight: 800; color: var(--orange);
+    line-height: 1; letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+  .stat-label {
+    font-size: 13px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.16em;
+    font-weight: 600;
+  }
+
+  /* ===== TAGLINE BLOCK ===== */
+  .tagline-block { padding: 90px 0 100px; text-align: center; }
+  .tagline-top {
+    font-size: 38px; font-weight: 800; color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .tagline-orange {
+    font-size: 42px; font-weight: 800; color: var(--orange);
+    margin-bottom: 36px;
+    letter-spacing: -0.02em;
+  }
+  .tagline-orange .dash { display: inline-block; margin: 0 14px; }
+  .tagline-body {
+    font-size: 19px; color: var(--text-body); line-height: 1.7;
+    max-width: 680px; margin: 0 auto;
+  }
+
+  /* ===== DEMO MOCKUP ===== */
+  .demo-section { padding: 60px 0 110px; }
+  .demo-frame {
+    max-width: 940px; margin: 0 auto;
+    background: var(--black-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    box-shadow: 0 30px 80px -20px rgba(232, 84, 32, 0.12), 0 8px 16px -8px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    text-align: left;
+  }
+  .demo-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px;
+    background: var(--black-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .demo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
+  .demo-bar-label {
+    margin-left: 16px; font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .demo-body { padding: 36px 40px 40px; }
+  .demo-input {
+    border: 1.5px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 14px;
+    background: var(--black);
+    font-weight: 500;
+  }
+  .demo-input .ask-icon {
+    color: var(--orange); font-weight: 900; font-style: italic;
+    font-size: 20px; letter-spacing: -3px;
+    transform: skewX(-6deg);
+  }
+  .demo-a {
+    font-size: 16px;
+    color: var(--text-body);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .demo-a strong { color: var(--white); font-weight: 700; }
+  .demo-a em { color: var(--white); font-style: italic; }
+  .demo-a .answer-intro {
+    margin-bottom: 24px; color: var(--text-body);
+  }
+  .demo-a .guest-block {
+    border-left: 2px solid var(--orange);
+    padding: 4px 0 4px 18px;
+    margin-bottom: 22px;
+  }
+  .demo-a .guest-block:last-child { margin-bottom: 0; }
+  .demo-a .guest-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px;
+  }
+  .demo-a .guest-header .guest-ep {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .demo-a .guest-block p {
+    margin: 0 0 6px;
+    color: var(--text-body);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .demo-a .guest-block p:last-child { margin-bottom: 0; }
+  .citations-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .citation {
+    border-left: 2px solid var(--orange);
+    padding: 8px 0 8px 16px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .citation-headshot {
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+    border: 1.5px solid var(--orange);
+  }
+  .citation-text { flex: 1; }
+  .citation-title { font-size: 14px; color: var(--white); font-weight: 700; margin-bottom: 4px; }
+  .citation-meta { font-size: 12px; color: var(--text-muted); }
+  .citation-meta .ts { color: var(--orange); font-weight: 700; }
+
+  /* ===== EXPERT DIRECTORY ===== */
+  .directory-intro {
+    text-align: center; max-width: 720px; margin: 0 auto 60px;
+  }
+  .directory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .expert-card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 22px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .expert-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px -10px rgba(232, 84, 32, 0.2);
+  }
+  .expert-photo {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 18px;
+    display: block;
+    border: 2px solid var(--orange);
+  }
+  .expert-name {
+    font-size: 16px; color: var(--white); font-weight: 700;
+    margin-bottom: 4px; letter-spacing: -0.005em;
+  }
+  .expert-title {
+    font-size: 13px; color: var(--text-body); font-weight: 500;
+    margin-bottom: 4px; line-height: 1.4;
+  }
+  .expert-company {
+    font-size: 13px; color: var(--orange); font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .expert-episodes {
+    margin-top: 12px;
+    font-size: 11px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.16em;
+    font-weight: 600;
+    padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .directory-cta {
+    text-align: center; margin-top: 50px;
+  }
+  .directory-cta a {
+    color: var(--orange); font-weight: 600; font-size: 15px;
+    border-bottom: 1px solid var(--orange);
+    padding-bottom: 2px;
+  }
+  .directory-cta a:hover { color: var(--orange-hover); border-color: var(--orange-hover); }
+
+  /* ===== USE CASES ===== */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 1000px; margin: 56px auto 0;
+  }
+  .usecase {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 32px 28px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .usecase:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+  }
+  .usecase-icon {
+    color: var(--orange);
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .usecase h3 {
+    font-size: 19px; color: var(--white);
+    font-weight: 700; line-height: 1.3;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .usecase p {
+    font-size: 14px; color: var(--text-body);
+    line-height: 1.55;
+  }
+
+  /* ===== CLOSING CTA ===== */
+  .closing { padding: 130px 0 140px; text-align: center; }
+  .closing h2 {
+    font-size: 64px; font-weight: 800; color: var(--white);
+    line-height: 1.0; text-transform: uppercase; margin-bottom: 24px;
+    letter-spacing: -0.025em;
+  }
+  .closing p {
+    font-size: 22px; color: var(--text-body); max-width: 600px;
+    margin: 0 auto 44px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 18px 44px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1.5px solid var(--white);
+    background: transparent;
+    color: var(--white);
+    transition: all 0.15s ease;
+  }
+  .btn:hover { background: rgba(255,255,255,0.06); }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+  .btn-primary:hover { background: var(--orange-hover); border-color: var(--orange-hover); }
+
+  /* ===== PODCAST BANNER ===== */
+  .podcast-banner {
+    padding: 90px 0;
+    background: linear-gradient(180deg, var(--black-2) 0%, var(--black-3) 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .podcast-banner-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .podcast-banner-left { flex: 1; min-width: 320px; }
+  .podcast-banner-eyebrow {
+    font-size: 13px; color: var(--orange); font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .podcast-banner-title {
+    font-size: 36px; font-weight: 800; color: var(--white);
+    line-height: 1.1; text-transform: uppercase; letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .podcast-banner-sub {
+    font-size: 17px; color: var(--text-body); max-width: 580px; line-height: 1.6;
+  }
+  @media (max-width: 768px) {
+    .podcast-banner-title { font-size: 26px; }
+    .podcast-banner { padding: 60px 0; }
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 48px;
+    color: var(--text-muted);
+    font-size: 13px;
+    background: var(--black-3);
+  }
+  .footer-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-left { display: flex; align-items: center; gap: 14px; }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a:hover { color: var(--white); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 980px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .directory-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero { padding: 140px 24px 80px; min-height: 700px; }
+    .hero h1 { font-size: 42px; }
+    .hero-sub { font-size: 17px; }
+    .search-btn { padding: 12px 20px; font-size: 14px; }
+  }
+  @media (max-width: 720px) {
+    nav, footer { padding: 24px; }
+    .section-title-orange, .section-title-white { font-size: 28px; }
+    .tagline-top, .tagline-orange { font-size: 28px; }
+    .closing h2 { font-size: 36px; }
+    .demo-body { padding: 24px; }
+    .stat-num { font-size: 40px; }
+    section.body-section { padding: 80px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="e-slash">//</span> DIB Crowd Intelligence</div>
+    <h1>Ask 100+ DIB Builders<br>Anything</h1>
+    <p class="hero-sub">
+      We&rsquo;ve recorded <strong>100+ episodes</strong> of the DIB Innovators Podcast with the founders, CEOs,
+      and builders shaping the Defense Industrial Base. Instead of leaving that knowledge buried in audio files,
+      we built a way for you to <strong>interact with it</strong> &mdash; ask real questions and get real answers
+      from the people who&rsquo;ve already done it. <em style="color: var(--orange); font-style: normal; font-weight: 600;">Not generic AI content.</em>
+    </p>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">//</span>
+        <input
+          id="hero-search"
+          class="search-input"
+          type="text"
+          placeholder="Should I sell to government or commercial first?"
+        />
+        <button class="search-btn" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Ask</button>
+      </div>
+
+      <div class="suggestion-label">Try asking</div>
+      <div class="suggestions">
+        <button class="chip" data-q="Should I sell to government or commercial first?">Government or commercial first?</button>
+        <button class="chip" data-q="What do defense VCs actually underwrite at first check?">What VCs underwrite at first check</button>
+        <button class="chip" data-q="How do I survive the 5-year defense budget cycle?">Surviving the 5-year budget cycle</button>
+        <button class="chip" data-q="How do operators transition from military service to founder?">From operator to founder</button>
+        <button class="chip" data-q="What separates high-impact defense executives from people who just look good on paper?">What separates great defense execs</button>
+        <button class="chip" data-q="How do I get CMMC Level 2 assessed without a 9-month wait?">CMMC without the 9-month wait</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dotted-divider"></div>
+
+<!-- INTRO -->
+<section class="body-section">
+  <div class="container">
+    <div class="section-title-orange">100+ Episodes. One Place to Ask Them.</div>
+    <p class="section-body">
+      The DIB Innovators Podcast is a four-year archive of conversations with the operators actually building inside the
+      Defense Industrial Base &mdash; <strong>founders, CEOs, primes, program managers, engineers, and BD leads.</strong>
+      We didn&rsquo;t want that hard-won knowledge buried in audio and video files on the resources page of our website. So we built
+      <span class="accent">DIB Crowd Intelligence</span> &mdash; a way to interact with the content, ask it questions,
+      and learn from real experts. Not generic AI advice scraped from the internet.
+    </p>
+  </div>
+
+  <div class="stats-row" style="margin-top: 80px;">
+    <div class="stat-card">
+      <div class="stat-num">112</div>
+      <div class="stat-label">Episodes Indexed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">186</div>
+      <div class="stat-label">DIB Operators</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">2.4M</div>
+      <div class="stat-label">Words Searched</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">14</div>
+      <div class="stat-label">Topic Clusters</div>
+    </div>
+  </div>
+</section>
+
+<div class="dotted-divider"></div>
+
+<!-- TAGLINE -->
+<section class="tagline-block">
+  <div class="container">
+    <div class="tagline-top">Real Questions. Real Answers.</div>
+    <div class="tagline-orange"><span class="dash">&mdash;</span>With Receipts<span class="dash">&mdash;</span></div>
+    <p class="tagline-body">
+      No hallucinated advice. Every answer is grounded in what real DIB operators &mdash; the ones who actually closed the contract,
+      passed the audit, raised the round, shipped the system &mdash; said on the record.
+    </p>
+  </div>
+</section>
+
+<div class="dotted-divider"></div>
+
+<!-- DEMO -->
+<section class="body-section" id="demo">
+  <div class="container-wide">
+    <div class="demo-frame">
+      <div class="demo-bar">
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <div class="demo-bar-label">// DIB Crowd Intelligence</div>
+      </div>
+      <div class="demo-body">
+        <div class="demo-input">
+          <span class="ask-icon">//</span>
+          <span id="demo-question">Should I sell to government or commercial first?</span>
+        </div>
+
+        <div class="demo-a" id="demo-answer">
+          <div class="answer-intro">
+            Four guests across the catalog have weighed in on this. The strongest signal: <strong>pick a side and focus.</strong>
+          </div>
+          <div class="guest-block">
+            <div class="guest-header">Jackson Moses &middot; Founder &amp; MP, Silent Ventures <span class="guest-ep">EP. 94 &middot; 35:15</span></div>
+            <p><em>&ldquo;Dual use is a hedge word, it&rsquo;s optionality &mdash; hey, this company can be a commercial outperformer or a government outperformer or both, and we&rsquo;re going to look brilliant. Companies get slaughtered.&rdquo;</em></p>
+            <p>His framing for founders: pick which side of the equation you&rsquo;re tackling first &mdash; government or commercial &mdash; and focus there. The derivative business line can come later.</p>
+          </div>
+          <div class="guest-block">
+            <div class="guest-header">Jeff Crusey &middot; General Partner, Ice9 Capital <span class="guest-ep">EP. 91 &middot; 27:35</span></div>
+            <p><em>&ldquo;I&rsquo;ve seen a lot of companies try to become dual-use because their investors say, oh, we need to diversify revenue, so you need to start doing all this commercial stuff too. When sometimes that doesn&rsquo;t make any sense.&rdquo;</em></p>
+            <p>Crusey&rsquo;s warning: investor pressure to force dual-use is one of the most common ways early defense companies lose focus.</p>
+          </div>
+          <div class="guest-block">
+            <div class="guest-header">Zach Shore &middot; CRO, Hermeus <span class="guest-ep">EP. 87 &middot; 06:58</span></div>
+            <p><em>&ldquo;Our end market, our customer is the Department of Defense and allied partner nations, and building unmanned systems that can fly high and fast in pursuit of national security.&rdquo;</em></p>
+            <p>Hermeus is explicitly defense-first. Shore notes commercial spillover is welcome but not the strategy &mdash; the discipline of one customer kept the company moving.</p>
+          </div>
+          <div class="guest-block">
+            <div class="guest-header">Will Edwards &middot; Founder &amp; CEO, Firehawk <span class="guest-ep">EP. 86 &middot; 28:01</span></div>
+            <p><em>&ldquo;Worse than not winning a contract is winning a contract and not delivering on that contract.&rdquo;</em></p>
+            <p>Firehawk is also defense-first. Edwards&rsquo; point: when government is your customer, the bar is delivery, not optionality. That&rsquo;s incompatible with hedging across two markets at once.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dotted-divider"></div>
+
+<!-- EXPERT DIRECTORY -->
+<section class="body-section">
+  <div class="directory-intro">
+    <div class="section-title-white">Meet the Operators<br>Behind the Answers</div>
+    <p class="section-body">
+      Every answer is grounded in conversations with real DIB founders, CEOs, and builders.
+      <strong>You&rsquo;re not asking an AI &mdash; you&rsquo;re asking them.</strong>
+    </p>
+  </div>
+
+  <div class="directory-grid">
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Todd Stirtzinger" class="expert-photo">
+      <div class="expert-name">Todd Stirtzinger</div>
+      <div class="expert-title">Chief Executive Officer</div>
+      <div class="expert-company">Galvion</div>
+      <div class="expert-episodes">Ep. 89</div>
+    </div>
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="James Gherdovich" class="expert-photo">
+      <div class="expert-name">James Gherdovich</div>
+      <div class="expert-title">Chief Strategy Officer</div>
+      <div class="expert-company">GridArrow</div>
+      <div class="expert-episodes">Ep. 90</div>
+    </div>
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Jeff Crusey" class="expert-photo">
+      <div class="expert-name">Jeff Crusey</div>
+      <div class="expert-title">General Partner</div>
+      <div class="expert-company">Ice9 Capital</div>
+      <div class="expert-episodes">Ep. 91</div>
+    </div>
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Brook Leonard" class="expert-photo">
+      <div class="expert-name">Brook Leonard</div>
+      <div class="expert-title">Chief Executive Officer</div>
+      <div class="expert-company">Rogue Space Systems</div>
+      <div class="expert-episodes">Ep. 92</div>
+    </div>
+
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Philip Hover-Smoot" class="expert-photo">
+      <div class="expert-name">Philip Hover-Smoot</div>
+      <div class="expert-title">Chief Executive Officer</div>
+      <div class="expert-company">Atlas Cup</div>
+      <div class="expert-episodes">Ep. 93</div>
+    </div>
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Jackson Moses" class="expert-photo">
+      <div class="expert-name">Jackson Moses</div>
+      <div class="expert-title">Founder &amp; Managing Partner</div>
+      <div class="expert-company">Silent Ventures</div>
+      <div class="expert-episodes">Ep. 94</div>
+    </div>
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Matt McElvogue" class="expert-photo">
+      <div class="expert-name">Matt McElvogue</div>
+      <div class="expert-title">VP of Design</div>
+      <div class="expert-company">Teague</div>
+      <div class="expert-episodes">Ep. 95</div>
+    </div>
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Jonathan Slavik" class="expert-photo">
+      <div class="expert-name">Jonathan Slavik</div>
+      <div class="expert-title">Founder &amp; CEO</div>
+      <div class="expert-company">Sagittarius Logistics</div>
+      <div class="expert-episodes">Ep. 96</div>
+    </div>
+
+    <div class="expert-card">
+      <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="David Dickey" class="expert-photo">
+      <div class="expert-name">David Dickey</div>
+      <div class="expert-title">Founder &amp; CEO</div>
+      <div class="expert-company">The Patriot Group</div>
+      <div class="expert-episodes">Ep. 97</div>
+    </div>
+    <div class="expert-card" style="display: flex; align-items: center; justify-content: center; flex-direction: column; min-height: 100%; background: var(--black-2); border-style: dashed;">
+      <div style="font-size: 36px; font-weight: 800; color: var(--orange); line-height: 1; margin-bottom: 10px;">88+</div>
+      <div class="expert-title">More Operators<br>From Episodes 1&ndash;88</div>
+    </div>
+  </div>
+
+  <div class="directory-cta">
+    <a href="#">Browse all operators &rarr;</a>
+  </div>
+</section>
+
+<div class="dotted-divider"></div>
+
+<!-- USE CASES -->
+<section class="body-section">
+  <div class="container">
+    <div class="section-title-orange">What You Can Ask</div>
+    <p class="section-body">
+      Every question a DIB founder, CEO, or builder might ask in their first five years &mdash;
+      answered by the people who&rsquo;ve already lived it.
+    </p>
+  </div>
+  <div class="usecase-grid">
+    <div class="usecase">
+      <div class="usecase-icon">// CAPITAL</div>
+      <h3>Capital &amp; Investors</h3>
+      <p>What VCs underwrite at first check, dilutive vs. non-dilutive, valuations, raising in defense vs. commercial.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// CONTRACTS</div>
+      <h3>Government Sales &amp; Program Offices</h3>
+      <p>Winning your first contract, navigating PEOs and primes, OTAs, RFIs, and finding a sponsor inside the program office.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// SURVIVAL</div>
+      <h3>Surviving the Valley of Death</h3>
+      <p>The 5-year budget cycle, reprogramming, multi-stakeholder campaigns, and how to stay alive long enough to win.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// POSITIONING</div>
+      <h3>Strategic Positioning</h3>
+      <p>Government-first vs. commercial-first, the dual-use trap, and when defense-only is the right answer.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// FOUNDERS</div>
+      <h3>Founder Journeys</h3>
+      <p>Military operator to CEO, prime-to-startup transitions, and lessons from leaving SpaceX or Anduril to build your own.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// LEADERSHIP</div>
+      <h3>Hiring &amp; Leadership</h3>
+      <p>First execs, BD leads, accountability, and what separates great defense executives from people who just look good on paper.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// COMPLIANCE</div>
+      <h3>Compliance &amp; Cybersecurity</h3>
+      <p>CMMC Level 2, NIST 800-171, FedRAMP inheritance, AI security, and what the audit actually looks like.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// PRIMES</div>
+      <h3>Working with Primes &amp; Allies</h3>
+      <p>Subcontracting in, CRADAs, integration with the new titans, and selling into allied procurement (AUKUS, Singapore, Israel).</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// MANUFACTURING</div>
+      <h3>Hardware, Manufacturing &amp; Scaling</h3>
+      <p>Prototype to production, supply chain, capital intensity in space and aerospace, and partnering with U.S. industrial base.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// AUTONOMY</div>
+      <h3>AI &amp; Autonomy in Defense</h3>
+      <p>AI in business development, autonomous platforms, manned-unmanned teaming, and weaponized AI on the threat side.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// COMMS</div>
+      <h3>Comms, RF &amp; Anti-Jamming</h3>
+      <p>Multiband radios, frequency-hopping, jam-resistant architectures, and what the EW lessons from Ukraine actually mean.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// DESIGN</div>
+      <h3>Design &amp; UX in Defense</h3>
+      <p>Why design matters in DIB hardware and software, and how operator-centered thinking changes program outcomes.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// READINESS</div>
+      <h3>Operator Readiness &amp; Health Tech</h3>
+      <p>Biometrics for warfighters, sleep and HRV optimization, and how commercial wellness tech is finding a home in special operations.</p>
+    </div>
+    <div class="usecase">
+      <div class="usecase-icon">// TALENT</div>
+      <h3>Defense Recruiting &amp; Talent Markets</h3>
+      <p>Placing senior leaders, comp benchmarks across the DIB, and the post-service mistakes that quietly torpedo careers.</p>
+    </div>
+  </div>
+</section>
+
+<div class="dotted-divider"></div>
+
+<!-- PODCAST BANNER -->
+<section class="podcast-banner">
+  <div class="container podcast-banner-inner">
+    <div class="podcast-banner-left">
+      <div class="podcast-banner-eyebrow">// DIB Innovators Podcast</div>
+      <h2 class="podcast-banner-title">Want the full conversations?</h2>
+      <p class="podcast-banner-sub">
+        DIB Crowd Intelligence is built on 100+ episodes of long-form interviews with
+        the founders, CEOs, and builders inside the Defense Industrial Base.
+      </p>
+    </div>
+    <a href="https://radicl.com/resources" class="btn btn-primary">Visit the Full Podcast Series &rarr;</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <a href="#" class="logo-wrap" style="gap: 3px;">
+        <span class="logo-slashes" style="font-size: 22px;">//</span>
+        <span class="logo-text" style="font-size: 18px;">RADICL</span>
+      </a>
+      <span>&copy; 2026 &middot; Boulder, Colorado</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://radicl.com">radicl.com</a>
+      <a href="#">DIB Innovators Podcast</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function block(name, title, ep, ts, paragraphs) {
+    var ps = paragraphs.map(function(p){ return '<p>' + p + '</p>'; }).join('');
+    return '<div class="guest-block">' +
+      '<div class="guest-header">' + name + ' \u00b7 ' + title +
+        ' <span class="guest-ep">EP. ' + ep + ' \u00b7 ' + ts + '</span>' +
+      '</div>' + ps +
+    '</div>';
+  }
+  function intro(html) {
+    return '<div class="answer-intro">' + html + '</div>';
+  }
+
+  var demoAnswers = {
+    "Should I sell to government or commercial first?": {
+      answer:
+        intro('Four guests across the catalog have weighed in. The strongest signal: <strong>pick a side and focus.</strong>') +
+        block('Jackson Moses', 'Founder &amp; MP, Silent Ventures', '94', '35:15', [
+          '<em>&ldquo;Dual use is a hedge word, it\u2019s optionality \u2014 hey, this company can be a commercial outperformer or a government outperformer or both, and we\u2019re going to look brilliant. Companies get slaughtered.&rdquo;</em>',
+          'His framing for founders: pick which side of the equation you\u2019re tackling first \u2014 government or commercial \u2014 and focus there. The derivative business line can come later.'
+        ]) +
+        block('Jeff Crusey', 'General Partner, Ice9 Capital', '91', '27:35', [
+          '<em>&ldquo;I\u2019ve seen a lot of companies try to become dual-use because their investors say, oh, we need to diversify revenue, so you need to start doing all this commercial stuff too. When sometimes that doesn\u2019t make any sense.&rdquo;</em>',
+          'Crusey\u2019s warning: investor pressure to force dual-use is one of the most common ways early defense companies lose focus.'
+        ]) +
+        block('Zach Shore', 'CRO, Hermeus', '87', '06:58', [
+          '<em>&ldquo;Our end market, our customer is the Department of Defense and allied partner nations, and building unmanned systems that can fly high and fast in pursuit of national security.&rdquo;</em>',
+          'Hermeus is explicitly defense-first. Shore notes commercial spillover is welcome but not the strategy \u2014 the discipline of one customer kept the company moving.'
+        ]) +
+        block('Will Edwards', 'Founder &amp; CEO, Firehawk', '86', '28:01', [
+          '<em>&ldquo;Worse than not winning a contract is winning a contract and not delivering on that contract.&rdquo;</em>',
+          'Firehawk is also defense-first. Edwards\u2019 point: when government is your customer, the bar is delivery, not optionality. That\u2019s incompatible with hedging across two markets at once.'
+        ])
+    },
+
+    "What do defense VCs actually underwrite at first check?": {
+      answer:
+        intro('Two defense investors who actually write first checks were direct about what gets them to yes.') +
+        block('Jeff Crusey', 'General Partner, Ice9 Capital', '91', '19:13', [
+          '<em>&ldquo;I\u2019m pretty tech first, honestly. I want to make sure that it\u2019s the right tech at the right time, developed the right way. I\u2019ll scrutinize the heck out of unit economics.&rdquo;</em>',
+          '<em>&ldquo;They have these great fission reactors, but if it\u2019s producing electricity at $10 a kilowatt hour, that\u2019s not going to do anybody any good.&rdquo;</em>',
+          'Crusey looks for an unfair advantage on the team \u2014 ideally technical depth paired with someone who can commercialize. Most of his companies don\u2019t even have a market when he meets them.'
+        ]) +
+        block('Jeff Crusey', 'General Partner, Ice9 Capital', '91', '34:38', [
+          '<em>&ldquo;Money is just money. Most of these investors aren\u2019t really going to provide much value-add. So don\u2019t over-index on that. Take the money and move. Speed of execution is more important here.&rdquo;</em>'
+        ]) +
+        block('Jackson Moses', 'Founder &amp; MP, Silent Ventures', '94', '08:42', [
+          '<em>&ldquo;We\u2019re specialists, we\u2019re not a generalist firm. We know defense really well, we know the national security apparatus.&rdquo;</em>',
+          'Moses\u2019 underwriting assumption: <em>&ldquo;If you don\u2019t have a program of record in defense tech, even though this is a very frothy ecosystem with a lot of dollars coming in, you\u2019re not a multi-billion-dollar outcome. You\u2019re just not.&rdquo;</em>'
+        ])
+    },
+
+    "How do I survive the 5-year defense budget cycle?": {
+      answer:
+        intro('Three operators talked about how the 5-year POM cycle actually kills companies \u2014 and what to do about it.') +
+        block('Adam Warmoth', 'Founder &amp; CEO, Chariot Defense', '88', '27:25', [
+          '<em>&ldquo;The budgeting process is a five-year process. JSIDS is dead now. Long live JSIDS. If we had to get in line and say, okay, this is great technology, we\u2019re not going to make it five years. If we don\u2019t get a contract in five years, we won\u2019t be around to play the game.&rdquo;</em>',
+          'His bet: portfolio-style budget reform that lets services reprogram dollars in-year is the only way through the valley of death.'
+        ]) +
+        block('Adam Warmoth', 'Founder &amp; CEO, Chariot Defense', '88', '22:48', [
+          '<em>&ldquo;It\u2019s not just the end users that matter, it\u2019s not just the program officer that matters. It\u2019s the labs, it\u2019s Congress, it\u2019s the GOs, it\u2019s senior leaders. You have to run a campaign and have a cohesive theory of victory.&rdquo;</em>'
+        ]) +
+        block('Zach Shore', 'CRO, Hermeus', '87', '26:27', [
+          '<em>&ldquo;Do what you say you\u2019re going to do. It\u2019s not really that complicated. And if you\u2019re not, be very clear about what happened. Don\u2019t be defensive.&rdquo;</em>',
+          'Shore\u2019s read: when you slip, own it. When DoD slips, name it. The relationship survives only if neither side gets adversarial.'
+        ]) +
+        block('Will Edwards', 'Founder &amp; CEO, Firehawk', '86', '28:01', [
+          '<em>&ldquo;My VP of Fed said, it\u2019s worse than not winning a contract is winning a contract and not delivering on that contract.&rdquo;</em>',
+          'Edwards: every dollar raised goes into hiring and equipment to make sure deliveries don\u2019t slip. That\u2019s the survival posture.'
+        ])
+    },
+
+    "How do operators transition from military service to founder?": {
+      answer:
+        intro('Four guests made this exact transition \u2014 each surfaced a different lesson worth knowing.') +
+        block('Brook Leonard', 'Founder &amp; CEO, Rogue Space Systems', '92', '40:29', [
+          '<em>&ldquo;Speed and patience have to coexist in all of your operations. I\u2019m a go-fast, get there right now. But you do need to think about the fact that, is this a viable market? Everything you do costs money, and money drives your entire operations.&rdquo;</em>',
+          'Brook spent 31 years in the Air Force \u2014 including teaching at Weapons School \u2014 before becoming CEO of Rogue Space Systems.'
+        ]) +
+        block('Zach Shore', 'CRO, Hermeus', '87', '01:03', [
+          '<em>&ldquo;Background was a Marine signals officer originally. Did tours in Iraq, in Fallujah and Ramadi, then transitioned into a TT transition team role as an infantryman in Helmand.&rdquo;</em>',
+          'Shore\u2019s arc: Marines \u2192 Deloitte/PE \u2192 stood up Anduril\u2019s C2 business unit \u2192 jumped to Hermeus to learn hardware. He framed each move as a deliberate skill acquisition.'
+        ]) +
+        block('Adam Warmoth', 'Founder &amp; CEO, Chariot Defense', '88', '22:48', [
+          '<em>&ldquo;You\u2019re managing this octopus, eight-legged stool, whatever you want to call it. It\u2019s not just the end users, it\u2019s the program officer, the labs, Congress, the GOs, senior leaders. I find that\u2019s missing sometimes in some of these early defense companies.&rdquo;</em>',
+          'Warmoth\u2019s read on the operator-to-founder gap: military networks open doors, but running a campaign across that full stakeholder map is a different skill set.'
+        ]) +
+        block('David Dickey', 'Founder &amp; CEO, The Patriot Group', '97', '12:01', [
+          '<em>&ldquo;God forbid you come out of the service \u2014 I\u2019ve seen some people, even senior ones, just take too long, go back to school for six years, and then they have a couple degrees but they still have no real-world experience and they\u2019re further separated from their military service. That doesn\u2019t help anyone.&rdquo;</em>',
+          'Dickey places senior DIB execs for a living. His warning to transitioning officers: pedigree without active operating experience ages out fast.'
+        ])
+    },
+
+    "What separates high-impact defense executives from people who just look good on paper?": {
+      answer:
+        intro('David Dickey (The Patriot Group) places senior leaders into DIB companies for a living. He answered this question directly across his episode.') +
+        block('David Dickey', 'Founder &amp; CEO, The Patriot Group', '97', '28:07', [
+          '<em>&ldquo;You\u2019re really trying to uncover someone that can make a difference. What is their disposition? In the heat of things, how are they going to react? Are they going to be able to lead well?&rdquo;</em>',
+          'Dickey\u2019s screen: ask about specific situations where they did well or didn\u2019t \u2014 and what they actually had to overcome.'
+        ]) +
+        block('David Dickey', 'Founder &amp; CEO, The Patriot Group', '97', '29:51', [
+          '<em>&ldquo;We found someone that had small business, they understood to grow to big business. And they came from a large company, large prime, so they knew small business to big business and what it takes to get from a small business to big business.&rdquo;</em>',
+          'The pattern he hunts for: leaders who\u2019ve actually moved up and down the size curve, not just sat at one altitude.'
+        ]) +
+        block('David Dickey', 'Founder &amp; CEO, The Patriot Group', '97', '48:14', [
+          '<em>&ldquo;Accountability. Being accountable when you\u2019re driving your teams is just really key. The buck always stops with these founders. They are the head of people. You can\u2019t hire your way into success.&rdquo;</em>',
+          'Dickey\u2019s deal-breaker: candidates who think the right hire underneath them is a substitute for owning the outcome themselves.'
+        ])
+    },
+
+    "How do I get CMMC Level 2 assessed without a 9-month wait?": {
+      answer:
+        intro('Anders Erickson is a cybersecurity principal at Eide Bailly \u2014 a top-20 firm and CMMC assessor. He broke down exactly why the bottleneck exists and how to get around it.') +
+        block('Anders Erickson', 'Cybersecurity Principal, Eide Bailly', '11', '10:00', [
+          '<em>&ldquo;I can run seven, eight assessments at once because I\u2019ve got a deep pool of assessors. I\u2019m becoming the risk manager, not the executor of assessments. I\u2019m managing the risk management process of the CMMC assessment, not the whole assessment system.&rdquo;</em>',
+          'The unlock: find an assessor who taps a partner ecosystem instead of trying to staff every assessment with their own internal team.'
+        ]) +
+        block('Anders Erickson', 'Cybersecurity Principal, Eide Bailly', '11', '10:53', [
+          '<em>&ldquo;I just had someone this morning came and said, I need to move it up to December 1st. Can you do it December 1st? And we said, yep, we can get it done.&rdquo;</em>',
+          'The 9-month backlog isn\u2019t universal. The right partners can compress timelines dramatically.'
+        ]) +
+        block('Anders Erickson', 'Cybersecurity Principal, Eide Bailly', '11', '04:57', [
+          '<em>&ldquo;NIST 800-171 has been around since 2017. A decade.&rdquo;</em>',
+          'Erickson\u2019s point: the work to be ready isn\u2019t new \u2014 it\u2019s just been deferred. The companies in the worst spot are the ones who treated CMMC as a future problem.'
+        ])
+    }
+  };
+
+  // Endpoint where the backend serverless function lives.
+  // When deployed on Vercel, the /api/ask.js file is automatically served at /api/ask.
+  var API_ENDPOINT = '/api/ask';
+
+  // Render a single guest-block from Pinecone citation metadata.
+  // Pinecone citations include: file name, page reference, the highlight text.
+  // We also fall back to using the raw answer if no structured citations come back.
+  function renderAnswerFromPinecone(payload) {
+    var answer = payload.answer || '';
+    var citations = payload.citations || [];
+
+    // Wrap the model's answer in a single block at the top
+    var html = '<div class="answer-intro">' + escapeHtml(answer).replace(/\n/g, '<br>') + '</div>';
+
+    // Render each citation as a guest-block beneath the answer
+    if (citations.length) {
+      citations.forEach(function(c){
+        var ref = (c.references && c.references[0]) || {};
+        var file = ref.file && ref.file.name ? ref.file.name : 'Unknown source';
+        var page = ref.pages && ref.pages.length ? 'p. ' + ref.pages.join(', ') : '';
+        var highlight = c.highlight && c.highlight.text ? c.highlight.text : '';
+
+        html += '<div class="guest-block">' +
+          '<div class="guest-header">' + escapeHtml(file) +
+            (page ? ' <span class="guest-ep">' + escapeHtml(page) + '</span>' : '') +
+          '</div>' +
+          (highlight ? '<p><em>&ldquo;' + escapeHtml(highlight) + '&rdquo;</em></p>' : '') +
+        '</div>';
+      });
+    }
+    return html;
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // Ask Pinecone (via our /api/ask backend) for a real answer.
+  // Falls back to the hardcoded demoAnswers object if the fetch fails.
+  async function askQuestion(q) {
+    document.getElementById('hero-search').value = q;
+    document.getElementById('demo-question').textContent = q;
+    document.getElementById('demo-answer').innerHTML =
+      '<div class="answer-intro" style="opacity:.7">Searching 20+ transcripts&hellip;</div>';
+    document.getElementById('demo').scrollIntoView({behavior: 'smooth'});
+
+    try {
+      var res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q })
+      });
+      if (!res.ok) throw new Error('API ' + res.status);
+      var data = await res.json();
+      document.getElementById('demo-answer').innerHTML = renderAnswerFromPinecone(data);
+    } catch (err) {
+      // Fallback for previews / local dev: use the hardcoded demo answers if present
+      var fallback = demoAnswers[q];
+      if (fallback) {
+        document.getElementById('demo-answer').innerHTML = fallback.answer;
+      } else {
+        document.getElementById('demo-answer').innerHTML =
+          '<div class="answer-intro">Something went wrong reaching the catalog. Try one of the suggested questions above.</div>';
+      }
+    }
+  }
+
+  // Chip clicks → ask the question
+  document.querySelectorAll('.chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      askQuestion(chip.getAttribute('data-q'));
+    });
+  });
+
+  // Pressing Enter in the search bar → ask the question
+  document.getElementById('hero-search').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') {
+      var q = e.target.value.trim();
+      if (q) askQuestion(q);
+    }
+  });
+
+  // The "Ask" button next to the search input
+  document.querySelector('.search-btn').addEventListener('click', function(){
+    var q = document.getElementById('hero-search').value.trim();
+    if (q) askQuestion(q);
+  });
+</script>
+
+</body>
+</html>
