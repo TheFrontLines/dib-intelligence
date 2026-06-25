@@ -268,6 +268,40 @@
   .answer-body p { margin-bottom: 14px; }
   .answer-body p:last-child { margin-bottom: 0; }
 
+  /* Guest blocks (parsed from markdown) */
+  .answer-body .guest-block {
+    border-left: 2px solid var(--orange);
+    padding: 6px 0 6px 18px;
+    margin: 20px 0;
+  }
+  .answer-body .guest-block:first-child { margin-top: 24px; }
+  .answer-body .guest-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--white);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .answer-body .guest-header .ep {
+    color: var(--orange);
+    font-weight: 700;
+    margin-left: 6px;
+  }
+  .answer-body .guest-block p {
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .answer-body .answer-intro {
+    font-size: 16px;
+    color: var(--text-body);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .answer-body .answer-intro strong { color: var(--white); }
+
   /* Citations */
   .citations {
     margin-top: 22px;
@@ -450,18 +484,56 @@
       .replace(/'/g, '&#039;');
   }
 
-  // Convert simple markdown (bold, italics, paragraphs) from Pinecone's response into our HTML structure
+  // Render inline markdown (bold + italics) on already-escaped content.
+  function inlineFormat(s) {
+    return s
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*])\*([^*]+)\*(?!\*)/g, '$1<em>$2</em>');
+  }
+
+  // Convert Pinecone's markdown-ish answer into our HTML structure.
+  // The Assistant tends to produce: [intro paragraphs] --- ### Name (Episode X) [body] --- ### Name (Episode X) [body] ...
   function formatAnswer(text) {
+    if (!text) return '';
     var safe = escapeHtml(text);
-    // Bold **text**
-    safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    // Italic *text*
-    safe = safe.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    // Paragraphs (double newlines)
-    var paras = safe.split(/\n\n+/);
-    return paras.map(function(p){
-      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
-    }).join('');
+
+    // Split on horizontal rule separators (--- on its own line, or surrounded by newlines)
+    var sections = safe.split(/\n\s*-{3,}\s*\n|\n\s*\*{3,}\s*\n/);
+
+    var html = '';
+    sections.forEach(function(section, idx){
+      section = section.trim();
+      if (!section) return;
+
+      // Check if this section starts with a guest header like "### Name (Episode X)" or "### Name Lastname (Ep. X)"
+      var headerMatch = section.match(/^#{2,3}\s*([^\n]+?)\s*\(\s*(Episode|Ep\.?)\s*([0-9]+)\s*\)\s*\n?([\s\S]*)$/i);
+
+      if (headerMatch) {
+        var name = headerMatch[1].trim();
+        var epNum = headerMatch[3];
+        var body = headerMatch[4].trim();
+        var bodyParas = body.split(/\n\n+/).map(function(p){
+          return '<p>' + inlineFormat(p.replace(/\n/g, ' ')) + '</p>';
+        }).join('');
+        html += '<div class="guest-block">' +
+          '<div class="guest-header">' + name + '<span class="ep">EP. ' + epNum + '</span></div>' +
+          bodyParas +
+        '</div>';
+      } else {
+        // Strip any leftover ### headers without episode tags
+        section = section.replace(/^#{1,3}\s+/gm, '');
+        var paras = section.split(/\n\n+/);
+        var wrappedClass = (idx === 0) ? 'answer-intro' : 'answer-intro';
+        paras.forEach(function(p){
+          var inner = inlineFormat(p.replace(/\n/g, ' ')).trim();
+          if (inner) {
+            html += '<div class="' + wrappedClass + '">' + inner + '</div>';
+          }
+        });
+      }
+    });
+
+    return html;
   }
 
   function renderCitations(citations) {
