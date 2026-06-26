@@ -129,11 +129,17 @@
   .intro p {
     font-size: 17px;
     color: var(--text-body);
-    line-height: 1.55;
-    max-width: 600px;
-    margin: 0 auto;
+    line-height: 1.6;
+    max-width: 640px;
+    margin: 0 auto 14px;
   }
+  .intro p:last-child { margin-bottom: 0; }
   .intro p strong { color: var(--white); font-weight: 700; }
+  .intro .intro-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+  }
+  .intro .intro-sub strong { color: var(--text-body); }
 
   /* Search bar */
   .search-wrap {
@@ -489,9 +495,13 @@
     <div class="eyebrow">// Powered by 100+ DIB Innovators Episodes</div>
     <h1>Ask the People<br>Building the DIB.</h1>
     <p>
-      Real questions, real answers &mdash; grounded in long-form interviews with the
-      <strong>founders, CEOs, and operators</strong> inside the Defense Industrial Base.
-      Not generic AI. The actual voices.
+      We&rsquo;ve recorded <strong>over 100 long-form conversations</strong> with the founders, CEOs,
+      and operators inside the Defense Industrial Base. This tool was built to make it easy
+      to engage with and learn from all of it.
+    </p>
+    <p class="intro-sub">
+      Type a question below. We&rsquo;ll analyze <strong>millions of words</strong> across every episode
+      and surface direct insights from the people who&rsquo;ve actually done it &mdash; not generic AI.
     </p>
   </div>
 
