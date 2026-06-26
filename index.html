@@ -449,6 +449,177 @@
   }
   .error strong { color: var(--orange); }
 
+  /* ===== EPISODE DIRECTORY ===== */
+  .directory {
+    margin-top: 80px;
+    border-top: 1px solid var(--border);
+    padding-top: 56px;
+  }
+  .directory-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .directory-eyebrow {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 14px;
+  }
+  .directory-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .directory-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto 28px;
+    line-height: 1.55;
+  }
+  .directory-search-wrap {
+    max-width: 480px;
+    margin: 0 auto 36px;
+  }
+  .directory-search {
+    width: 100%;
+    background: var(--black-card);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 12px 18px 12px 44px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23E85420' stroke-width='2' viewBox='0 0 24 24'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 16px center;
+    background-size: 16px 16px;
+    transition: border-color 0.15s ease;
+  }
+  .directory-search:focus { border-color: var(--orange); }
+  .directory-search::placeholder { color: var(--text-muted); }
+
+  .directory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .ep-card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .ep-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+  }
+  .ep-card-thumb {
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #2a2422 0%, #1a1a1a 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .ep-card-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(232, 84, 32, 0.18) 0%, transparent 60%);
+  }
+  .ep-card-initials {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    color: var(--white);
+    opacity: 0.32;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+  }
+  .ep-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .ep-card-ep {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 4px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+  }
+  .ep-card-body {
+    padding: 14px 16px 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .ep-card-guest {
+    font-size: 15px;
+    color: var(--white);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+  .ep-card-company {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    min-height: 14px;
+  }
+  .ep-card-topic {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.45;
+    flex: 1;
+  }
+  .directory-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    padding: 40px 20px;
+    font-size: 14px;
+  }
+  @media (max-width: 980px) {
+    .directory-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .directory-grid { grid-template-columns: repeat(2, 1fr); }
+    .directory-title { font-size: 24px; }
+  }
+  @media (max-width: 440px) {
+    .directory-grid { grid-template-columns: 1fr; }
+  }
+
   /* Footer */
   footer {
     padding: 22px 32px;
@@ -542,6 +713,27 @@
     </div>
     <div id="answer-content"></div>
   </div>
+
+  <!-- EPISODE DIRECTORY -->
+  <section class="directory" id="directory">
+    <div class="directory-head">
+      <div class="directory-eyebrow">// The Catalog</div>
+      <h2 class="directory-title">Every Episode. Every Guest.</h2>
+      <p class="directory-sub">
+        Browse the full catalog of DIB Innovators conversations. Click any episode to read or listen on radicl.com.
+      </p>
+      <div class="directory-search-wrap">
+        <input
+          id="directory-search"
+          class="directory-search"
+          type="text"
+          placeholder="Filter by name, company, or topic…"
+          autocomplete="off"
+        >
+      </div>
+    </div>
+    <div class="directory-grid" id="directory-grid"></div>
+  </section>
 </main>
 
 <footer>
@@ -824,6 +1016,56 @@
   askBtn.addEventListener('click', function(){
     askQuestion(searchInput.value.trim());
   });
+
+  // Catalog of every episode parsed from the RADICL Podcast dashboard CSV.
+  var EPISODES = [{"ep":104,"company":"Delta.g","guest":"Tony Lowe","topic":"Taking Quantum Gravity Sensing From Lab to Field","url":"https://radicl.com/resources/tony-lowe-delta-g-quantum-gravity-sensing"},{"ep":103,"company":"OpenC3","guest":"Greg Bonn","topic":"How A 20-Year-Old Defense Prime Spin-Out Turned Profitable in Year One","url":"https://radicl.com/radlabs-research-and-insights/greg-bonn-openc3-defense-spinout-profitable-year-one"},{"ep":101,"company":"Purple Rhombus","guest":"Mike Benitez","topic":"Building 100,000 Drones a Year With Existing Factories","url":"https://radicl.com/resources/mike-benitez-100000-drones-a-year"},{"ep":100,"company":"Outlander VC","guest":"Paige Craig","topic":"Funding Defense's Black Sheep Before Anyone Else Will","url":"https://radicl.com/resources/black-sheep-vc-paige-craig"},{"ep":99,"company":"AI Strategy Corp","guest":"David Mroczka","topic":"Cutting Army Tech Scouting From 12 Months to 2 Weeks","url":"https://radicl.com/resources/david-mroczka-army-tech-scouting-12-months-to-2-weeks"},{"ep":98,"company":"AimLock","guest":"Bryan Bockmon","topic":"Keeping Humans in the Kill Decision While Automating the Rest","url":"https://radicl.com/resources/bryan-bockmon-autonomous-targeting-aimlock"},{"ep":97,"company":"Teague","guest":"Matt McElvogue","topic":"Why Operators Stop Trusting the Tech & Start Working Around It","url":"https://radicl.com/resources/matt-mcelvogue-defense-tech-design-ai-autonomy"},{"ep":96,"company":"Patriot Group","guest":"David Dickey","topic":"When Defense Tech Startups Can't Hire Fast Enough to Scale","url":"https://radicl.com/dib-innovators-podcast/patriot-group-david-dickey-when-defense-tech-startups-cant-hire-fast-enough-to-scale"},{"ep":95,"company":"Sagittarius Logistics","guest":"Jonathan Slavik","topic":"Payload Handoffs in Hours, Not Months","url":"https://radicl.com/dib-innovators-podcast/sagittarius-logistics-jonathan-slavik-payload-handoffs-in-hours-not-months"},{"ep":94,"company":"Silent Ventures","guest":"Jackson Moses","topic":"Why Dual Use Is a Dirty Word in Defense Tech","url":"https://radicl.com/dib-innovators-podcast/silent-ventures-jackson-moses-why-dual-use-is-a-dirty-word-in-defense-tech?hs_preview=CHnZYJai-211180738858"},{"ep":93,"company":"Atlas Cup","guest":"Philip Hover-Smoot","topic":"Building Capital Pathways Outside Government Funds","url":"https://radicl.com/dib-innovators-podcast/atlas-cup-philip-hover-smoot-building-capital-pathways-outside-government-funds"},{"ep":92,"company":"Rogue Space Systems","guest":"Brook Leonard","topic":"Building the Infrastructure Layer for Modular Space Operations","url":"https://radicl.com/dib-innovators-podcast/rogue-space-systems-brook-leonard-building-the-infrastructure-layer-for-modular-space-operations"},{"ep":91,"company":"IceNine","guest":"Jeff Crusey","topic":"Why SaaS Playbooks Derail Hard Tech Companies","url":"https://radicl.com/dib-innovators-podcast/icenine-jeff-crusey-the-saas-playbook-mismatch-that-takes-hard-tech-companies-off-the-rails"},{"ep":90,"company":"Grid Aero","guest":"James Gherdovich","topic":"Why Autonomous Logistics Must Self-Heal, Not Just Deliver","url":"https://radicl.com/dib-innovators-podcast/grid-aero-james-gherdovich-why-autonomous-logistics-must-self-heal-not-just-deliver"},{"ep":89,"company":"Anduril","guest":"Shane Arnott","topic":"Eliminating Design Review Theater through Equal Financial Risk","url":"https://radicl.com/dib-innovators-podcast/anduril-shane-arnott-eliminating-design-review-theater-through-equal-financial-risk"},{"ep":88,"company":"Chariot Defense","guest":"Adam Warmoth","topic":"Powering Edge Compute and C2 Where There's No Grid","url":"https://radicl.com/dib-innovators-podcast/chariot-defense-adam-warmoth-powering-edge-compute-and-c2-where-theres-no-grid"},{"ep":87,"company":"Galvion","guest":"Todd Stirtzinger","topic":"the Warfighter Lab That Replaced Self-Reporting with Design Science","url":"https://radicl.com/dib-innovators-podcast/galvion-todd-stirtzinger-the-warfighter-lab-that-replaced-self-reporting-with-design-science"},{"ep":86,"company":"Firehawk","guest":"Will Edwards","topic":"Cutting Propellant Production from 60 Days to 6 Hours, No $1B Facility","url":"https://radicl.com/dib-innovators-podcast/firehawks-will-edwards-cutting-propellant-production-from-60-days-to-6-hours-no-1b-facility"},{"ep":85,"company":"Hermeus","guest":"Zach Shore","topic":"Building Mach 5 Aircraft & the Path to Reusable Hypersonics","url":"https://radicl.com/dib-innovators-podcast/hermeus-zach-shore-building-mach-5-aircraft-the-path-to-reusable-hypersonics"},{"ep":84,"company":"","guest":"Ashish Parikh","topic":"Building Mesh Radios That Frequency-Hop Faster Than Jammers Can Track","url":"https://radicl.com/dib-innovators-podcast/ashish-parikh-building-mesh-radios-that-frequency-hop-faster-than-jammers-can-track"},{"ep":83,"company":"Oura","guest":"Geoff Wylde","topic":"Building Wearables That Guide Troop Readiness and Effectiveness","url":"https://radicl.com/dib-innovators-podcast/oura-geoff-wylde-building-wearables-that-guide-troop-readiness-and-effectiveness"},{"ep":82,"company":"DEWM","guest":"Clark Haymond","topic":"Using Networks to Accelerate Product Validation Cycles","url":"https://radicl.com/dib-innovators/dewm-clark-haymond-on-using-networks-to-accelerate-product-validation-cycles"},{"ep":81,"company":"Inversion","guest":"Justin Fiaschetti","topic":"Hiring Engineers Who Think Like Founder","url":"https://radicl.com/dib-innovators/inversion-justin-fiaschetti-hiring-engineers-who-think-like-founders"},{"ep":80,"company":"Lothric Labs","guest":"Jonathan DiMattei","topic":"Capability vs Compliance in Defense Manufacturing","url":"https://radicl.com/dib-innovators/ep-80-lothric-labs-jonathan-dimattei-on-capability-vs-compliance-in-defense-manufacturing"},{"ep":79,"company":"PrimerAI","guest":"Sean Moriarty","topic":"Time-Bounded Mandates vs Incremental Reform in AI Adoption","url":"https://radicl.com/radicl-blog/primerai-sean-moriarty-time-bounded-mandates-vs-incremental-reform-in-ai-adoption"},{"ep":78,"company":"Epsilon3","guest":"Laura Crabtree","topic":"Compliance as a Trust Signal for Defense Customers","url":"https://radicl.com/radicl-blog/epsilon3-laura-crabtree-compliance-as-a-trust-signal-for-defense-customers"},{"ep":77,"company":"Lazarus Alliance","guest":"Michael Peters","topic":"A Security Trifecta that Replaces Checkbox Compliance","url":"https://radicl.com/dib-innovators/lazarus-alliances-michael-peters-a-security-trifecta-that-replaces-checkbox-compliance"},{"ep":76,"company":"OpsLab","guest":"Arun Nair","topic":"Teaching AI the Art of Scheduling","url":"https://radicl.com/radlabs-research/opslab-arun-nair-teaching-ai-the-art-of-scheduling"},{"ep":75,"company":"Elara Nova","guest":"Kim Crider","topic":"Balancing \u201cShiny Objects\u201d & Foundational Infrastructure","url":"https://radicl.com/radicl-blog/elara-nova-kim-crider-balancing-shiny-objects-foundational-infrastructure"},{"ep":74,"company":"Roger","guest":"Jill Castilla","topic":"Building Fee-Free Banking for Under-18 Military Recruits","url":"https://radicl.com/radicl-blog/roger-jill-castilla-building-fee-free-banking-for-under-18-military-recruits"},{"ep":73,"company":"Ethos","guest":"Sasha Seymore","topic":"Training Warfighters at the Speed of Weapons Innovation","url":"https://radicl.com/radicl-blog/ethoss-sasha-seymore-training-warfighters-at-the-speed-of-weapons-innovation"},{"ep":72,"company":"Zone 5","guest":"Thomas Akers","topic":"Why Production-Focused Requirements Beat Performance Goals","url":"https://radicl.com/radicl-blog/zone-5s-thomas-akers-why-production-focused-requirements-beat-performance-goals"},{"ep":71,"company":"Skydio","guest":"Mark Valentine","topic":"How Sanctions Freed Them from Supply Chain Dependence","url":"https://radicl.com/radicl-blog/skydio-mark-valentine-how-sanctions-freed-them-from-supply-chain-dependence"},{"ep":70,"company":"A-LIGN","guest":"Matt Bruggeman","topic":"External Service Provider Scope Issues That Kill CMMC","url":"https://radicl.com/radicl-blog/a-lign-matt-bruggeman-external-service-provider-scope-issues-that-kill-cmmc"},{"ep":69,"company":"Venus Aerospace","guest":"Sassie Duggleby","topic":"Mach 5 Flight With No Moving Parts","url":"https://radicl.com/radicl-blog/venus-aerospace-sassie-duggleby-mach-5-flight-with-no-moving-parts"},{"ep":68,"company":"Nooks","guest":"Sean Blackman","topic":"Classified Infrastructure as a Service Model","url":"https://radicl.com/radicl-blog/nooks-sean-blackman-classified-infrastructure-as-a-service-model"},{"ep":66,"company":"Albers Aerospace","guest":"John Albers","topic":"Vertical Integration Approach Solving DIB Gaps","url":"https://radicl.com/radicl-blog/albers-aerospace-john-albers-vertical-integration-approach-solving-dib-gaps"},{"ep":65,"company":"Scientific Systems","guest":"Kunal Mehra","topic":"Affordable Mass Revolution","url":"https://radicl.com/radicl-blog/scientific-systems-kunal-mehra-affordable-mass-revolution"},{"ep":64,"company":"HAVOCai","guest":"Paul Lwin","topic":"Winning Through Asymmetric Naval Economics","url":"https://radicl.com/radicl-blog/havocai-paul-lwin-winning-through-asymmetric-naval-economics"},{"ep":63,"company":"Method MFG","guest":"Rhys Andersen","topic":"Bootstrapping a Machine Shop into Aerospace Manufacturing","url":"https://radicl.com/radicl-blog/method-mfg-rhys-andersen-bootstrapping-a-machine-shop-into-aerospace-manufacturing"},{"ep":62,"company":"Graham Manufacturing","guest":"Matthew Malone","topic":"Why Defense Manufacturing Must Reinvest in IT","url":"https://radicl.com/radicl-blog/graham-manufacturings-matthew-malone-why-defense-manufacturing-must-reinvest-in-it"},{"ep":61,"company":"Agile","guest":"Chris Pearson","topic":"Mastering Space Propulsion with 3D Printing & Test Innovation","url":"https://radicl.com/radicl-blog/agile-chris-pearson-mastering-space-propulsion-with-3d-printing-test-innovation"},{"ep":60,"company":"Bazze","guest":"Samuel Semwangu","topic":"How Commercial Intelligence Is Transforming Modern Warfare","url":"https://radicl.com/radicl-blog/bazze-samuel-semwangu-how-commercial-intelligence-is-transforming-modern-warfare"},{"ep":59,"company":"","guest":"Lt. Gen Dave Nahom (USAF, ret)","topic":"Why Predictability Matters More Than Money in Military Readiness","url":"https://radicl.com/radicl-blog/commander-david-nahom-why-predictability-matters-more-than-money-in-military-readiness"},{"ep":58,"company":"Advanced Space","guest":"Bradley Cheetham","topic":"Using Orbital Mechanics to Cut Mission Costs","url":"https://radicl.com/radicl-blog/advanced-space-bradley-cheetham-using-orbital-mechanics-to-cut-mission-costs"},{"ep":57,"company":"","guest":"Cyber Resilience Webinar","topic":"NSM-22 and Critical Infrastructure Defense","url":"https://radicl.com/radicl-blog/cyber-resilience-at-the-crossroads-webinar"},{"ep":56,"company":"SkyRunner","guest":"Stewart Hamel","topic":"Why Field Repairability Beats High-Tech in Contested Domains","url":"https://radicl.com/radicl-blog/skyrunner-stewart-hamel-why-field-repairability-beats-high-tech-in-contested-domains"},{"ep":55,"company":"Piasecki Aircraft","guest":"John Piasecki","topic":"Their Answer to Extended-Range Combat Logistics","url":"https://radicl.com/radicl-blog/piasecki-aircraft-john-piasecki-their-answer-to-extended-range-combat-logistics"},{"ep":54,"company":"Slingshot Aerospace","guest":"Erik Ekwurzel","topic":"Low-Cost Optical Alternatives for Space Radar Systems","url":"https://radicl.com/radicl-blog/slingshot-aerospace-erik-ekwurzel-low-cost-optical-alternatives-for-space-radar-systems"},{"ep":53,"company":"Skydweller Aero","guest":"Robert Miller","topic":"Transforming Solar Aircraft into Military-Grade Assets","url":"https://radicl.com/radicl-blog/skydweller-aero-robert-miller-transforming-solar-aircraft-into-military-grade-assets"},{"ep":52,"company":"HTX Labs","guest":"Scott Schneider","topic":"Meeting Students Where They Are with Multi-Platform VR","url":"https://radicl.com/radicl-blog/htx-labs-scott-schneider-meeting-students-where-they-are-with-multi-platform-vr"},{"ep":51,"company":"Pindel Global Precision","guest":"Bill Berrien","topic":"How Military Training Models Can Transform Manufacturing Skills","url":"https://radicl.com/radicl-blog/pindel-global-precision-bill-berrien-how-military-training-models-can-transform-manufacturing-skills"},{"ep":50,"company":"Inneos","guest":"Brian Peters","topic":"Building the Nervous System for Autonomous Military Vehicles","url":"https://radicl.com/radicl-blog/inneos-brian-peters-building-the-nervous-system-for-autonomous-military-vehicles"},{"ep":49,"company":"Atomic-6","guest":"Trevor Smith","topic":"Revolutionizing Aerospace Through Advanced Composite Materials","url":"https://radicl.com/radicl-blog/atomic-6-trevor-smith-revolutionizing-aerospace-through-advanced-composite-materials"},{"ep":48,"company":"EolianVR","guest":"Michael Simmons","topic":"Revolutionizing Military Mission Planning Through Immersive AR/VR Technology","url":"https://radicl.com/radicl-blog/eolianvr-michael-simmons-revolutionizing-military-mission-planning-through-immersive-ar/vr-technology"},{"ep":47,"company":"Phantom Space","guest":"Jim Cantrell","topic":"Democratizing Space Access Through Affordable Launch Solutions","url":"https://radicl.com/radicl-blog/phantom-spaces-jim-cantrell-democratizing-space-access-through-affordable-launch-solutions"},{"ep":46,"company":"Jetoptera","guest":"Andrei Evulet","topic":"Ejector Propulsion and Aerospace Innovation","url":"https://radicl.com/radicl-blog/jetoptera-andrei-evulet-ejector-propulsion-and-aerospace-innovation"},{"ep":45,"company":"AZDIC","guest":"Lynndy Smith","topic":"Partnering with Ukraine for Innovation","url":"https://radicl.com/radicl-blog/azdic-lynndy-smith-partnering-with-ukraine-for-innovation"},{"ep":44,"company":"HevenDrones","guest":"Bentzion Levinson","topic":"Battlefield Applications of Modular Drone Technology","url":"https://radicl.com/radicl-blog/hevendrones-bentzion-levinson-battlefield-applications-of-modular-drone-technology"},{"ep":43,"company":"Auria Space","guest":"Damian DiPippa","topic":"Space Domain Awareness and Asset Protection","url":"https://radicl.com/radicl-blog/auria-space-damian-dipippa-space-domain-awareness-and-asset-protection"},{"ep":42,"company":"AVATAR Partners","guest":"Scott Toppel","topic":"Revolutionizing Training with Emerging Technologies","url":"https://radicl.com/radicl-blog/avatar-partners-scott-toppel-revolutionizing-training-with-emerging-technologies"},{"ep":41,"company":"Red 6","guest":"Kevin Huyck","topic":"Overcoming Challenges in Military Pilot Production","url":"https://radicl.com/radicl-blog/red-6-kevin-huyck-overcoming-challenges-in-military-pilot-production"},{"ep":40,"company":"Rendered.ai","guest":"Nathan Kundtz","topic":"the Power of Synthetic Data in AI Development","url":"https://radicl.com/radicl-blog/rendered.ai-nathan-kundtz-the-power-of-synthetic-data-in-ai-development"},{"ep":39,"company":"Red Cat Holdings","guest":"Brendan Stewart","topic":"Strategic Partnerships for Advancing Drone Capabilities","url":"https://radicl.com/radicl-blog/red-cat-holdings-brendan-stewart-strategic-partnerships-for-advancing-drone-capabilities"},{"ep":38,"company":"","guest":"Compliance Webinar","topic":"CMMC Compliance & Cybersecurity Challenges","url":"https://radicl.com/radicl-blog/cmmc-compliance-and-cybersecurity-challenges-webinar"},{"ep":37,"company":"LightRidge Solutions","guest":"Josh Hartman","topic":"Competitive Endurance Theory in Orbital Warfare","url":"https://radicl.com/radicl-blog/lightridge-solutions-josh-hartman-competitive-endurance-theory-in-orbital-warfare"},{"ep":36,"company":"ZKX Solutions","guest":"Collin Sweeney","topic":"Zero-Knowledge Proofs and Digital Identity Security","url":"https://radicl.com/radicl-blog/zkx-solutions-collin-sweeney-zero-knowledge-proofs-and-digital-identity-security"},{"ep":35,"company":"Ultraview","guest":"Colby Harvey","topic":"Mentorship and Startup Success","url":"https://radicl.com/radicl-blog/ultraview-colby-harvey-mentorship-and-startup-success"},{"ep":34,"company":"Aerostar","guest":"Jim Nelson","topic":"the Future of Aerial Communications","url":"https://radicl.com/radicl-blog/aerostar-jim-nelson-the-future-of-aerial-communications"},{"ep":33,"company":"Rafael Systems Global Sustainment","guest":"Joe Anderson","topic":"the Power of Mentorship for Success in the DIB","url":"https://radicl.com/radicl-blog/rafael-systems-global-sustainment-joe-anderson-the-power-of-mentorship-for-success-in-the-dib"},{"ep":32,"company":"Hypori","guest":"Jared Shephard","topic":"Securing Mobile Communications in a Digital World","url":"https://radicl.com/radicl-blog/hypori-jared-shephard-securing-mobile-communications-in-a-digital-world"},{"ep":31,"company":"Apex","guest":"Ian Cinnamon","topic":"Sustainability and Innovation in Aerospace","url":"https://radicl.com/radicl-blog/apex-ian-cinnamon-sustainability-and-innovation-in-aerospace"},{"ep":29,"company":"Capella Space","guest":"Frank Backes","topic":"Transforming Global Transparency with Satellite Imaging","url":"https://radicl.com/radicl-blog/capella-space-frank-backes-transforming-global-transparency-with-satellite-imaging"},{"ep":28,"company":"Canopy Aerospace","guest":"Matt Shieh","topic":"Accelerator Programs for Propelling Growth in the Aerospace Industry","url":"https://radicl.com/radicl-blog/canopy-aerospace-matt-shieh-accelerator-programs-for-propelling-growth-in-the-aerospace-industry"},{"ep":27,"company":"ThinkOrbital","guest":"Lee Rosen","topic":"Innovating the Future of Space Exploration","url":"https://radicl.com/radicl-blog/thinkorbital-lee-rosen-innovating-the-future-of-space-exploration"},{"ep":26,"company":"Peak InfoSec","guest":"Matthew Titcombe","topic":"the Ins and Outs of Achieving CMMC Certification Success","url":"https://radicl.com/radicl-blog/peak-infosec-matthew-titcombe-the-ins-and-outs-of-achieving-cmmc-certification-success"},{"ep":25,"company":"goTenna","guest":"Ari Schuler","topic":"Overcoming Challenges in Educating Customers About New Technologies","url":"https://radicl.com/radicl-blog/gotenna-ari-schuler-overcoming-challenges-in-educating-customers-about-new-technologies"},{"ep":24,"company":"RMCI","guest":"Kenneth Speaks","topic":"Revolutionizing Rotorcraft Maintenance with Real-Time Data","url":"https://radicl.com/radicl-blog/rmci-kenneth-speaks-revolutionizing-rotorcraft-maintenance-with-real-time-data"},{"ep":23,"company":"American Lithium Energy","guest":"William Hadala","topic":"Scaling Lithium Battery Production in the US","url":"https://radicl.com/radicl-blog/american-lithium-energy-william-hadala-scaling-lithium-battery-production"},{"ep":22,"company":"Benchmark Space Systems","guest":"Ryan McDevitt","topic":"the Future of Satellite Mobility","url":"https://radicl.com/radicl-blog/benchmark-space-systems-ryan-mcdevitt-the-future-of-satellite-mobility"},{"ep":21,"company":"AWS","guest":"Travis Goldbach","topic":"Future Trends in Cloud Security and Zero Trust","url":"https://radicl.com/radicl-blog/aws-travis-goldbach-future-trends-in-cloud-security-and-zero-trust"},{"ep":20,"company":"Evolution Energy Solutions","guest":"Stacy Newstead","topic":"Navigating Regulatory Challenges in Tech and Defense","url":"https://radicl.com/radicl-blog/evolution-energy-solutions-stacy-newstead-navigating-regulatory-challenges-in-tech-and-defense"},{"ep":19,"company":"Spirit Electronics","guest":"Marti McCurdy","topic":"Inspiring the Next Generation in STEM","url":"https://radicl.com/radicl-blog/spirit-electronics-marti-mccurdy-inspiring-the-next-generation-in-stem"},{"ep":18,"company":"Long Capture","guest":"Russell Long","topic":"Crafting Winning Government Proposals for Startups","url":"https://radicl.com/radicl-blog/long-capture-russell-long-crafting-winning-government-proposals-for-startup"},{"ep":17,"company":"Free Form Fibers","guest":"Shay Harrison","topic":"Strategic Partnerships and Cybersecurity in Advanced Materials","url":"https://radicl.com/radicl-blog/free-form-fibers-shay-harrison-strategic-partnerships-and-cybersecurity-in-advanced-materials"},{"ep":16,"company":"","guest":"Rob Sladen","topic":"Navigating Government Contracts as a Small Business","url":"https://radicl.com/radicl-blog/rob-sladen-navigating-government-contracts-as-a-small-business?hs_preview=hJXCBePx-172540731722"},{"ep":15,"company":"Swarmbotics AI","guest":"Stephen Houghton","topic":"Leveraging Military Experience in Swarm Robotics Leadership","url":"https://radicl.com/radicl-blog/swarmbotics-ai-stephen-houghton-on-leveraging-military-experience-in-swarm-robotics-leadership"},{"ep":14,"company":"Dauntless XR","guest":"Lori-Lee Elliott","topic":"Enhancing Defense Training and Operational Efficiency with Extended Reality","url":"https://radicl.com/radicl-blog/dauntless-xr-lori-lee-elliott-enhancing-defense-training-and-operational-efficiency-with-extended-reality"},{"ep":13,"company":"Voyager Space","guest":"Matthew Kuta","topic":"Entrepreneurial Challenges and the Future of Aerospace","url":"https://radicl.com/radicl-blog/voyager-space-matthew-kuta-entrepreneurial-challenges-and-the-future-of-aerospace"},{"ep":12,"company":"CARR Machine & Tool","guest":"Jim Carr","topic":"Navigating Compliance and Culture in Defense Manufacturing","url":"https://radicl.com/radicl-blog/carr-machine-tools-jim-carr-navigating-compliance-and-culture-in-defense-manufacturing"},{"ep":11,"company":"World View","guest":"Ryan Hartman","topic":"Envisioning a Radically Improved Future in the DIB","url":"https://radicl.com/radicl-blog/world-view-ryan-hartman-envisioning-a-radically-improved-future-in-the-dib"},{"ep":10,"company":"Paragon","guest":"Grant Anderson","topic":"Building Teams that Make Innovation in the DIB a Regular Process","url":"https://radicl.com/radicl-blog/paragon-grant-anderson-building-teams-that-make-innovation-in-the-dib-a-regular-process"},{"ep":9,"company":"VirTra","guest":"Bob Ferris","topic":"Pioneering Virtual Training for Defense Advancement","url":"https://radicl.com/radicl-blog/virtra-bob-ferris-pioneering-virtual-training-for-defense-advancement"},{"ep":8,"company":"","guest":"Episode 8","topic":"Listen on Spotify","url":"https://open.spotify.com/episode/665TtDU8QTHYOeytoqDcQ2"},{"ep":7,"company":"SAS","guest":"Heather Bulk","topic":"Building a Diverse and Passionate Workforce in the DIB","url":"https://radicl.com/radicl-blog/sas-heather-bulk-on-building-a-diverse-and-passionate-workforce-in-the-dib"},{"ep":6,"company":"Umbra","guest":"Gabe Dominocielo","topic":"Differentiation and Self-Disruption in the Satellite Industry","url":"https://radicl.com/radicl-blog/umbra-gabe-dominocielo-on-differentiation-and-self-disruption-in-the-satellite-industry"},{"ep":5,"company":"Orbit Fab","guest":"Daniel Faber","topic":"Launching and Protecting Gas Stations in Space","url":"https://radicl.com/radicl-blog"},{"ep":4,"company":"Parts Life","guest":"Sam Thevanayagam","topic":"Solving the Problem of Obsolescence in the DIB","url":"https://radicl.com/radicl-blog/part-lifes-sam-thevanayagam-on-solving-the-problem-of-obsolescence-in-the-dib"},{"ep":3,"company":"Rogue Space Systems","guest":"Jeromy Grimmett","topic":"the Horizon-less Possibilities of In-Space Services","url":"https://radicl.com/radicl-blog/rogue-space-systems-jeromy-grimmett-on-the-horizon-less-possibilities-of-in-space-services"},{"ep":2,"company":"ATLAS Space","guest":"John Williams","topic":"the Space Community's Evolving Place in the DIB","url":"https://radicl.com/radicl-blog/atlas-spaces-john-williams-on-the-space-communitys-evolving-place-in-the-dib"},{"ep":1,"company":"Micro-Ant","guest":"Charles McCarrick","topic":"Innovation and Opportunity in the DIB","url":"https://radicl.com/radicl-blog/micro-ants-charles-mccarrick-on-innovation-and-opportunity-in-the-dib"}];
+
+  function initials(name) {
+    if (!name) return '?';
+    var parts = name.split(/\s+/).filter(function(p){ return p.length > 0 && /^[A-Z]/i.test(p); });
+    if (!parts.length) return name.charAt(0).toUpperCase();
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  }
+
+  function renderDirectory(filter) {
+    var grid = document.getElementById('directory-grid');
+    if (!grid) return;
+    filter = (filter || '').toLowerCase().trim();
+    var visible = EPISODES.filter(function(e) {
+      if (!filter) return true;
+      var hay = (e.guest + ' ' + e.company + ' ' + e.topic + ' ' + e.ep).toLowerCase();
+      return hay.indexOf(filter) !== -1;
+    });
+    if (!visible.length) {
+      grid.innerHTML = '<div class="directory-empty">No episodes match \"' + escapeHtml(filter) + '\". Try a different keyword.</div>';
+      return;
+    }
+    grid.innerHTML = visible.map(function(e) {
+      var ini = initials(e.guest);
+      return '<a class="ep-card" href="' + e.url + '" target="_blank" rel="noopener">' +
+        '<div class="ep-card-thumb">' +
+          '<span class="ep-card-ep">EP. ' + e.ep + '</span>' +
+          '<span class="ep-card-initials">' + escapeHtml(ini) + '</span>' +
+        '</div>' +
+        '<div class="ep-card-body">' +
+          '<div class="ep-card-guest">' + escapeHtml(e.guest) + '</div>' +
+          '<div class="ep-card-company">' + escapeHtml(e.company || '') + '</div>' +
+          '<div class="ep-card-topic">' + escapeHtml(e.topic) + '</div>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
+
+  // Initial render + wire up filter input
+  renderDirectory('');
+  var dirSearch = document.getElementById('directory-search');
+  if (dirSearch) {
+    dirSearch.addEventListener('input', function(ev) {
+      renderDirectory(ev.target.value);
+    });
+  }
+
 </script>
 
 </body>
