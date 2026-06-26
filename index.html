@@ -294,6 +294,28 @@
     line-height: 1.65;
     margin-bottom: 8px;
   }
+  .guest-link, .citation-link {
+    color: inherit;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    transition: color 0.15s ease;
+  }
+  .guest-link:hover, .citation-link:hover {
+    color: var(--orange);
+  }
+  .link-arrow {
+    color: var(--orange);
+    font-size: 0.85em;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    display: inline-block;
+  }
+  .guest-link:hover .link-arrow, .citation-link:hover .link-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
   .answer-body .answer-intro {
     font-size: 16px;
     color: var(--text-body);
@@ -327,8 +349,18 @@
     color: var(--white);
     font-weight: 700;
     margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .citation-title .ep-tag {
     font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.04em;
+    color: var(--orange);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    margin-right: 6px;
+  }
+  .citation-title .ep-guest {
+    color: var(--white);
+    font-weight: 700;
   }
   .citation-quote {
     font-size: 14px;
@@ -508,6 +540,13 @@
 
 <script>
   var API_ENDPOINT = '/api/ask';
+
+  // Episode # → radicl.com blog URL. Sourced from the RADICL Podcast Calendar CSV.
+  var EPISODE_URLS = {"1":"https://radicl.com/radicl-blog/micro-ants-charles-mccarrick-on-innovation-and-opportunity-in-the-dib","10":"https://radicl.com/radicl-blog/paragon-grant-anderson-building-teams-that-make-innovation-in-the-dib-a-regular-process","100":"https://radicl.com/resources/black-sheep-vc-paige-craig","101":"https://radicl.com/resources/mike-benitez-100000-drones-a-year","103":"https://radicl.com/radlabs-research-and-insights/greg-bonn-openc3-defense-spinout-profitable-year-one","104":"https://radicl.com/resources/tony-lowe-delta-g-quantum-gravity-sensing","11":"https://radicl.com/radicl-blog/world-view-ryan-hartman-envisioning-a-radically-improved-future-in-the-dib","12":"https://radicl.com/radicl-blog/carr-machine-tools-jim-carr-navigating-compliance-and-culture-in-defense-manufacturing","13":"https://radicl.com/radicl-blog/voyager-space-matthew-kuta-entrepreneurial-challenges-and-the-future-of-aerospace","14":"https://radicl.com/radicl-blog/dauntless-xr-lori-lee-elliott-enhancing-defense-training-and-operational-efficiency-with-extended-reality","15":"https://radicl.com/radicl-blog/swarmbotics-ai-stephen-houghton-on-leveraging-military-experience-in-swarm-robotics-leadership","16":"https://radicl.com/radicl-blog/rob-sladen-navigating-government-contracts-as-a-small-business?hs_preview=hJXCBePx-172540731722","17":"https://radicl.com/radicl-blog/free-form-fibers-shay-harrison-strategic-partnerships-and-cybersecurity-in-advanced-materials","18":"https://radicl.com/radicl-blog/long-capture-russell-long-crafting-winning-government-proposals-for-startup","19":"https://radicl.com/radicl-blog/spirit-electronics-marti-mccurdy-inspiring-the-next-generation-in-stem","2":"https://radicl.com/radicl-blog/atlas-spaces-john-williams-on-the-space-communitys-evolving-place-in-the-dib","20":"https://radicl.com/radicl-blog/evolution-energy-solutions-stacy-newstead-navigating-regulatory-challenges-in-tech-and-defense","21":"https://radicl.com/radicl-blog/aws-travis-goldbach-future-trends-in-cloud-security-and-zero-trust","22":"https://radicl.com/radicl-blog/benchmark-space-systems-ryan-mcdevitt-the-future-of-satellite-mobility","23":"https://radicl.com/radicl-blog/american-lithium-energy-william-hadala-scaling-lithium-battery-production","24":"https://radicl.com/radicl-blog/rmci-kenneth-speaks-revolutionizing-rotorcraft-maintenance-with-real-time-data","25":"https://radicl.com/radicl-blog/gotenna-ari-schuler-overcoming-challenges-in-educating-customers-about-new-technologies","26":"https://radicl.com/radicl-blog/peak-infosec-matthew-titcombe-the-ins-and-outs-of-achieving-cmmc-certification-success","27":"https://radicl.com/radicl-blog/thinkorbital-lee-rosen-innovating-the-future-of-space-exploration","28":"https://radicl.com/radicl-blog/canopy-aerospace-matt-shieh-accelerator-programs-for-propelling-growth-in-the-aerospace-industry","29":"https://radicl.com/radicl-blog/capella-space-frank-backes-transforming-global-transparency-with-satellite-imaging","3":"https://radicl.com/radicl-blog/rogue-space-systems-jeromy-grimmett-on-the-horizon-less-possibilities-of-in-space-services","31":"https://radicl.com/radicl-blog/apex-ian-cinnamon-sustainability-and-innovation-in-aerospace","32":"https://radicl.com/radicl-blog/hypori-jared-shephard-securing-mobile-communications-in-a-digital-world","33":"https://radicl.com/radicl-blog/rafael-systems-global-sustainment-joe-anderson-the-power-of-mentorship-for-success-in-the-dib","34":"https://radicl.com/radicl-blog/aerostar-jim-nelson-the-future-of-aerial-communications","35":"https://radicl.com/radicl-blog/ultraview-colby-harvey-mentorship-and-startup-success","36":"https://radicl.com/radicl-blog/zkx-solutions-collin-sweeney-zero-knowledge-proofs-and-digital-identity-security","37":"https://radicl.com/radicl-blog/lightridge-solutions-josh-hartman-competitive-endurance-theory-in-orbital-warfare","38":"https://radicl.com/radicl-blog/cmmc-compliance-and-cybersecurity-challenges-webinar","39":"https://radicl.com/radicl-blog/red-cat-holdings-brendan-stewart-strategic-partnerships-for-advancing-drone-capabilities","4":"https://radicl.com/radicl-blog/part-lifes-sam-thevanayagam-on-solving-the-problem-of-obsolescence-in-the-dib","40":"https://radicl.com/radicl-blog/rendered.ai-nathan-kundtz-the-power-of-synthetic-data-in-ai-development","41":"https://radicl.com/radicl-blog/red-6-kevin-huyck-overcoming-challenges-in-military-pilot-production","42":"https://radicl.com/radicl-blog/avatar-partners-scott-toppel-revolutionizing-training-with-emerging-technologies","43":"https://radicl.com/radicl-blog/auria-space-damian-dipippa-space-domain-awareness-and-asset-protection","44":"https://radicl.com/radicl-blog/hevendrones-bentzion-levinson-battlefield-applications-of-modular-drone-technology","45":"https://radicl.com/radicl-blog/azdic-lynndy-smith-partnering-with-ukraine-for-innovation","46":"https://radicl.com/radicl-blog/jetoptera-andrei-evulet-ejector-propulsion-and-aerospace-innovation","47":"https://radicl.com/radicl-blog/phantom-spaces-jim-cantrell-democratizing-space-access-through-affordable-launch-solutions","48":"https://radicl.com/radicl-blog/eolianvr-michael-simmons-revolutionizing-military-mission-planning-through-immersive-ar/vr-technology","49":"https://radicl.com/radicl-blog/atomic-6-trevor-smith-revolutionizing-aerospace-through-advanced-composite-materials","5":"https://radicl.com/radicl-blog","50":"https://radicl.com/radicl-blog/inneos-brian-peters-building-the-nervous-system-for-autonomous-military-vehicles","51":"https://radicl.com/radicl-blog/pindel-global-precision-bill-berrien-how-military-training-models-can-transform-manufacturing-skills","52":"https://radicl.com/radicl-blog/htx-labs-scott-schneider-meeting-students-where-they-are-with-multi-platform-vr","53":"https://radicl.com/radicl-blog/skydweller-aero-robert-miller-transforming-solar-aircraft-into-military-grade-assets","54":"https://radicl.com/radicl-blog/slingshot-aerospace-erik-ekwurzel-low-cost-optical-alternatives-for-space-radar-systems","55":"https://radicl.com/radicl-blog/piasecki-aircraft-john-piasecki-their-answer-to-extended-range-combat-logistics","56":"https://radicl.com/radicl-blog/skyrunner-stewart-hamel-why-field-repairability-beats-high-tech-in-contested-domains","57":"https://radicl.com/radicl-blog/cyber-resilience-at-the-crossroads-webinar","58":"https://radicl.com/radicl-blog/advanced-space-bradley-cheetham-using-orbital-mechanics-to-cut-mission-costs","59":"https://radicl.com/radicl-blog/commander-david-nahom-why-predictability-matters-more-than-money-in-military-readiness","6":"https://radicl.com/radicl-blog/umbra-gabe-dominocielo-on-differentiation-and-self-disruption-in-the-satellite-industry","60":"https://radicl.com/radicl-blog/bazze-samuel-semwangu-how-commercial-intelligence-is-transforming-modern-warfare","61":"https://radicl.com/radicl-blog/agile-chris-pearson-mastering-space-propulsion-with-3d-printing-test-innovation","62":"https://radicl.com/radicl-blog/graham-manufacturings-matthew-malone-why-defense-manufacturing-must-reinvest-in-it","63":"https://radicl.com/radicl-blog/method-mfg-rhys-andersen-bootstrapping-a-machine-shop-into-aerospace-manufacturing","64":"https://radicl.com/radicl-blog/havocai-paul-lwin-winning-through-asymmetric-naval-economics","65":"https://radicl.com/radicl-blog/scientific-systems-kunal-mehra-affordable-mass-revolution","66":"https://radicl.com/radicl-blog/albers-aerospace-john-albers-vertical-integration-approach-solving-dib-gaps","67":"https://radicl.com/radicl-blog/vatn-nelson-mills-the-three-pillars-every-defense-startup-must-master","68":"https://radicl.com/radicl-blog/nooks-sean-blackman-classified-infrastructure-as-a-service-model","69":"https://radicl.com/radicl-blog/venus-aerospace-sassie-duggleby-mach-5-flight-with-no-moving-parts","7":"https://radicl.com/radicl-blog/sas-heather-bulk-on-building-a-diverse-and-passionate-workforce-in-the-dib","70":"https://radicl.com/radicl-blog/a-lign-matt-bruggeman-external-service-provider-scope-issues-that-kill-cmmc","71":"https://radicl.com/radicl-blog/skydio-mark-valentine-how-sanctions-freed-them-from-supply-chain-dependence","72":"https://radicl.com/radicl-blog/zone-5s-thomas-akers-why-production-focused-requirements-beat-performance-goals","73":"https://radicl.com/radicl-blog/ethoss-sasha-seymore-training-warfighters-at-the-speed-of-weapons-innovation","74":"https://radicl.com/radicl-blog/roger-jill-castilla-building-fee-free-banking-for-under-18-military-recruits","75":"https://radicl.com/radicl-blog/elara-nova-kim-crider-balancing-shiny-objects-foundational-infrastructure","76":"https://radicl.com/radlabs-research/opslab-arun-nair-teaching-ai-the-art-of-scheduling","77":"https://radicl.com/dib-innovators/lazarus-alliances-michael-peters-a-security-trifecta-that-replaces-checkbox-compliance","78":"https://radicl.com/radicl-blog/epsilon3-laura-crabtree-compliance-as-a-trust-signal-for-defense-customers","79":"https://radicl.com/radicl-blog/primerai-sean-moriarty-time-bounded-mandates-vs-incremental-reform-in-ai-adoption","8":"https://open.spotify.com/episode/665TtDU8QTHYOeytoqDcQ2","80":"https://radicl.com/dib-innovators/ep-80-lothric-labs-jonathan-dimattei-on-capability-vs-compliance-in-defense-manufacturing","81":"https://radicl.com/dib-innovators/inversion-justin-fiaschetti-hiring-engineers-who-think-like-founders","82":"https://radicl.com/dib-innovators/dewm-clark-haymond-on-using-networks-to-accelerate-product-validation-cycles","83":"https://radicl.com/dib-innovators-podcast/oura-geoff-wylde-building-wearables-that-guide-troop-readiness-and-effectiveness","84":"https://radicl.com/dib-innovators-podcast/ashish-parikh-building-mesh-radios-that-frequency-hop-faster-than-jammers-can-track","85":"https://radicl.com/dib-innovators-podcast/hermeus-zach-shore-building-mach-5-aircraft-the-path-to-reusable-hypersonics","86":"https://radicl.com/dib-innovators-podcast/firehawks-will-edwards-cutting-propellant-production-from-60-days-to-6-hours-no-1b-facility","87":"https://radicl.com/dib-innovators-podcast/galvion-todd-stirtzinger-the-warfighter-lab-that-replaced-self-reporting-with-design-science","88":"https://radicl.com/dib-innovators-podcast/chariot-defense-adam-warmoth-powering-edge-compute-and-c2-where-theres-no-grid","89":"https://radicl.com/dib-innovators-podcast/anduril-shane-arnott-eliminating-design-review-theater-through-equal-financial-risk","9":"https://radicl.com/radicl-blog/virtra-bob-ferris-pioneering-virtual-training-for-defense-advancement","90":"https://radicl.com/dib-innovators-podcast/grid-aero-james-gherdovich-why-autonomous-logistics-must-self-heal-not-just-deliver","91":"https://radicl.com/dib-innovators-podcast/icenine-jeff-crusey-the-saas-playbook-mismatch-that-takes-hard-tech-companies-off-the-rails","92":"https://radicl.com/dib-innovators-podcast/rogue-space-systems-brook-leonard-building-the-infrastructure-layer-for-modular-space-operations","93":"https://radicl.com/dib-innovators-podcast/atlas-cup-philip-hover-smoot-building-capital-pathways-outside-government-funds","94":"https://radicl.com/dib-innovators-podcast/silent-ventures-jackson-moses-why-dual-use-is-a-dirty-word-in-defense-tech?hs_preview=CHnZYJai-211180738858","95":"https://radicl.com/dib-innovators-podcast/sagittarius-logistics-jonathan-slavik-payload-handoffs-in-hours-not-months","96":"https://radicl.com/dib-innovators-podcast/patriot-group-david-dickey-when-defense-tech-startups-cant-hire-fast-enough-to-scale","97":"https://radicl.com/resources/matt-mcelvogue-defense-tech-design-ai-autonomy","98":"https://radicl.com/resources/bryan-bockmon-autonomous-targeting-aimlock","99":"https://radicl.com/resources/david-mroczka-army-tech-scouting-12-months-to-2-weeks"};
+
+  function episodeUrl(ep) {
+    return EPISODE_URLS[String(ep)] || null;
+  }
   var introEl = document.getElementById('intro');
   var answerWrap = document.getElementById('answer-wrap');
   var questionEl = document.getElementById('demo-question');
@@ -565,8 +604,13 @@
         var pieces = part.split('|');
         var name = pieces[0];
         var epNum = pieces[1];
+        var url = episodeUrl(epNum);
+        var headerInner = name + '<span class="ep">EP. ' + epNum + '</span>';
+        var header = url
+          ? '<a href="' + url + '" target="_blank" rel="noopener" class="guest-link">' + headerInner + '<span class="link-arrow">&#x2197;</span></a>'
+          : headerInner;
         html += '<div class="guest-block">' +
-          '<div class="guest-header">' + name + '<span class="ep">EP. ' + epNum + '</span></div>';
+          '<div class="guest-header">' + header + '</div>';
         inGuestBlock = true;
         return;
       }
@@ -602,15 +646,47 @@
     return html;
   }
 
+  // Parse "Ep 65 Kunal Mehra.docx" → { ep: 65, guest: "Kunal Mehra" }
+  function parseEpisodeFile(filename) {
+    var m = filename.match(/^Ep\.?\s*([0-9]+)\s+(.+?)(?:\.docx?|\.pdf|\.txt)?$/i);
+    if (m) {
+      return { ep: m[1], guest: m[2].trim() };
+    }
+    return null;
+  }
+
   function renderCitations(citations) {
     if (!citations || !citations.length) return '';
-    var inner = citations.map(function(c){
+
+    // Dedupe citations that point to the same file (Pinecone often returns multiple chunks per file)
+    var seen = {};
+    var uniqueCitations = [];
+    citations.forEach(function(c){
       var ref = (c.references && c.references[0]) || {};
       var file = (ref.file && ref.file.name) ? ref.file.name : 'Source';
-      var pages = ref.pages && ref.pages.length ? ' &middot; p. ' + ref.pages.join(', ') : '';
+      if (!seen[file]) {
+        seen[file] = true;
+        uniqueCitations.push({ file: file, ref: ref, highlight: c.highlight });
+      }
+    });
+
+    var inner = uniqueCitations.map(function(c){
+      var parsed = parseEpisodeFile(c.file);
+      var displayName;
+      var url = null;
+      if (parsed) {
+        displayName = '<span class="ep-tag">EP. ' + escapeHtml(parsed.ep) + '</span>' +
+                      ' <span class="ep-guest">' + escapeHtml(parsed.guest) + '</span>';
+        url = episodeUrl(parsed.ep);
+      } else {
+        displayName = escapeHtml(c.file);
+      }
       var highlight = (c.highlight && c.highlight.text) ? c.highlight.text : '';
+      var titleHtml = url
+        ? '<a href="' + url + '" target="_blank" rel="noopener" class="citation-link">' + displayName + '<span class="link-arrow">&#x2197;</span></a>'
+        : displayName;
       return '<div class="citation">' +
-        '<div class="citation-title">' + escapeHtml(file) + escapeHtml(pages) + '</div>' +
+        '<div class="citation-title">' + titleHtml + '</div>' +
         (highlight ? '<div class="citation-quote">&ldquo;' + escapeHtml(highlight) + '&rdquo;</div>' : '') +
       '</div>';
     }).join('');
