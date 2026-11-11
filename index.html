@@ -200,6 +200,23 @@
     padding: 14px 0;
   }
   .search-input::placeholder { color: var(--text-muted); }
+  /* Industry filter */
+  .filter-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .filter-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  .industry-select {
+    appearance: none; -webkit-appearance: none;
+    background: var(--black-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238A8985'/%3E%3C/svg%3E") no-repeat right 12px center;
+    border: 1.5px solid var(--border-strong); border-radius: 9px; color: var(--white);
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 9px 34px 9px 12px; cursor: pointer; max-width: 100%;
+  }
+  .industry-select:focus { outline: none; border-color: var(--orange); }
+  .industry-select.active { border-color: var(--orange); color: var(--orange); }
+  .filter-note { font-size: 13px; color: var(--text-muted); }
+  .q-industry { display: inline-block; margin-left: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); border-radius: 6px; padding: 2px 8px; vertical-align: middle; }
+  .directory-filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .directory-filters .directory-search { flex: 1 1 260px; }
+  .ep-card-industry { margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+
   .search-btn {
     background: var(--orange);
     color: var(--white);
@@ -707,6 +724,11 @@
       >
       <button class="search-btn" id="ask-btn">Ask</button>
     </div>
+    <div class="filter-row">
+      <label class="filter-label" for="industry-select">Industry</label>
+      <select id="industry-select" class="industry-select" aria-label="Limit answers to an industry"><option value="">All industries</option><option value="Drones, Autonomy &amp; Robotics">Drones, Autonomy &amp; Robotics</option><option value="Space">Space</option><option value="Aerospace &amp; Aviation">Aerospace &amp; Aviation</option><option value="Weapons, Munitions &amp; Defense Hardware">Weapons, Munitions &amp; Defense Hardware</option><option value="Sensors, Comms &amp; EW">Sensors, Comms &amp; EW</option><option value="Manufacturing &amp; Supply Chain">Manufacturing &amp; Supply Chain</option><option value="Energy &amp; Power">Energy &amp; Power</option><option value="AI, Software &amp; Data">AI, Software &amp; Data</option><option value="Training, Simulation &amp; Human Performance">Training, Simulation &amp; Human Performance</option><option value="Capital &amp; Finance">Capital &amp; Finance</option><option value="Ecosystem, Policy &amp; Leadership">Ecosystem, Policy &amp; Leadership</option></select>
+      <span class="filter-note" id="filter-note">Searching every episode</span>
+    </div>
   </div>
 
   <div class="chips-wrap">
@@ -741,7 +763,8 @@
       <p class="directory-sub">
         Browse the full catalog of DIB Innovators conversations. Click any episode to read or listen on radicl.com.
       </p>
-      <div class="directory-search-wrap">
+      <div class="directory-search-wrap directory-filters">
+        <select id="directory-industry" class="industry-select" aria-label="Filter the catalog by industry"><option value="">All industries</option><option value="Drones, Autonomy &amp; Robotics">Drones, Autonomy &amp; Robotics</option><option value="Space">Space</option><option value="Aerospace &amp; Aviation">Aerospace &amp; Aviation</option><option value="Weapons, Munitions &amp; Defense Hardware">Weapons, Munitions &amp; Defense Hardware</option><option value="Sensors, Comms &amp; EW">Sensors, Comms &amp; EW</option><option value="Manufacturing &amp; Supply Chain">Manufacturing &amp; Supply Chain</option><option value="Energy &amp; Power">Energy &amp; Power</option><option value="AI, Software &amp; Data">AI, Software &amp; Data</option><option value="Training, Simulation &amp; Human Performance">Training, Simulation &amp; Human Performance</option><option value="Capital &amp; Finance">Capital &amp; Finance</option><option value="Ecosystem, Policy &amp; Leadership">Ecosystem, Policy &amp; Leadership</option></select>
         <input
           id="directory-search"
           class="directory-search"
@@ -974,6 +997,22 @@
     }
   }
 
+  // Industry filter state (shared by the search and the catalog)
+  var currentIndustry = '';
+  var industrySelect = document.getElementById('industry-select');
+  var directoryIndustry = document.getElementById('directory-industry');
+  var filterNote = document.getElementById('filter-note');
+  function setIndustry(val) {
+    currentIndustry = val || '';
+    if (industrySelect) { industrySelect.value = currentIndustry; industrySelect.classList.toggle('active', !!currentIndustry); }
+    if (directoryIndustry) { directoryIndustry.value = currentIndustry; directoryIndustry.classList.toggle('active', !!currentIndustry); }
+    if (filterNote) {
+      var n = currentIndustry ? EPISODES.filter(function(e){ return (e.industries || []).indexOf(currentIndustry) !== -1; }).length : 0;
+      filterNote.textContent = currentIndustry ? ('Answers limited to ' + currentIndustry + ' guests') : 'Searching every episode';
+    }
+    if (typeof renderDirectory === 'function') renderDirectory(document.getElementById('directory-search') ? document.getElementById('directory-search').value : '');
+  }
+
   async function askQuestion(q) {
     if (!q || !q.trim()) return;
     searchInput.value = q;
@@ -982,13 +1021,19 @@
     introEl.classList.add('hidden');
     answerWrap.classList.remove('empty');
     questionEl.textContent = q;
+    if (currentIndustry) {
+      var tag = document.createElement('span');
+      tag.className = 'q-industry';
+      tag.textContent = currentIndustry;
+      questionEl.appendChild(tag);
+    }
     startLoadingUI();
 
     try {
       var res = await fetch(API_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: q })
+        body: JSON.stringify({ question: q, industry: currentIndustry || undefined })
       });
 
       stopLoadingUI();
@@ -1053,12 +1098,13 @@
     if (!grid) return;
     filter = (filter || '').toLowerCase().trim();
     var visible = EPISODES.filter(function(e) {
+      if (currentIndustry && (e.industries || []).indexOf(currentIndustry) === -1) return false;
       if (!filter) return true;
-      var hay = (e.guest + ' ' + e.company + ' ' + e.topic + ' ' + e.ep).toLowerCase();
+      var hay = (e.guest + ' ' + e.company + ' ' + e.topic + ' ' + e.ep + ' ' + (e.industries || []).join(' ')).toLowerCase();
       return hay.indexOf(filter) !== -1;
     });
     if (!visible.length) {
-      grid.innerHTML = '<div class="directory-empty">No episodes match \"' + escapeHtml(filter) + '\". Try a different keyword.</div>';
+      grid.innerHTML = '<div class="directory-empty">No episodes match' + (filter ? ' \"' + escapeHtml(filter) + '\"' : '') + (currentIndustry ? ' in ' + escapeHtml(currentIndustry) : '') + '. Try a different keyword or industry.</div>';
       return;
     }
     grid.innerHTML = visible.map(function(e) {
@@ -1072,13 +1118,22 @@
           '<div class="ep-card-guest">' + escapeHtml(e.guest) + '</div>' +
           '<div class="ep-card-company">' + escapeHtml(e.company || '') + '</div>' +
           '<div class="ep-card-topic">' + escapeHtml(e.topic) + '</div>' +
+          ((e.industries && e.industries.length) ? '<div class="ep-card-industry">' + escapeHtml(e.industries[0]) + '</div>' : '') +
         '</div>' +
       '</a>';
     }).join('');
   }
 
+  // Industry tags per episode (from the Master Industry Categorization sheet)
+  var EPISODE_INDUSTRIES = {"128": ["Ecosystem, Policy & Leadership"], "127": ["Space", "Weapons, Munitions & Defense Hardware"], "126": ["Space"], "125": ["Drones, Autonomy & Robotics", "Weapons, Munitions & Defense Hardware"], "124": ["Drones, Autonomy & Robotics"], "123": ["Capital & Finance"], "122": ["Drones, Autonomy & Robotics"], "121": ["Aerospace & Aviation"], "120": ["Drones, Autonomy & Robotics"], "119": ["Manufacturing & Supply Chain", "Ecosystem, Policy & Leadership"], "118": ["Space"], "117": ["Drones, Autonomy & Robotics", "AI, Software & Data"], "116": ["Drones, Autonomy & Robotics"], "115": ["Drones, Autonomy & Robotics", "Weapons, Munitions & Defense Hardware"], "114": ["Drones, Autonomy & Robotics"], "113": ["Capital & Finance", "Manufacturing & Supply Chain"], "112": ["Sensors, Comms & EW"], "110": ["Drones, Autonomy & Robotics", "Weapons, Munitions & Defense Hardware"], "109": ["Drones, Autonomy & Robotics"], "107": ["Sensors, Comms & EW"], "105": ["Sensors, Comms & EW"], "103": ["AI, Software & Data", "Space"], "101": ["Drones, Autonomy & Robotics", "Manufacturing & Supply Chain"], "100": ["Capital & Finance"], "99": ["AI, Software & Data"], "98": ["Weapons, Munitions & Defense Hardware", "Drones, Autonomy & Robotics"], "97": ["Ecosystem, Policy & Leadership", "Drones, Autonomy & Robotics"], "96": ["Capital & Finance", "Ecosystem, Policy & Leadership"], "95": ["Space"], "94": ["Capital & Finance"], "93": ["Space", "Capital & Finance"], "92": ["Space"], "91": ["Capital & Finance"], "90": ["Drones, Autonomy & Robotics", "Aerospace & Aviation"], "89": ["Drones, Autonomy & Robotics", "Weapons, Munitions & Defense Hardware"], "88": ["Energy & Power", "Weapons, Munitions & Defense Hardware"], "87": ["Weapons, Munitions & Defense Hardware", "Training, Simulation & Human Performance"], "86": ["Weapons, Munitions & Defense Hardware", "Manufacturing & Supply Chain"], "85": ["Aerospace & Aviation"], "84": ["Sensors, Comms & EW", "Drones, Autonomy & Robotics"], "83": ["Training, Simulation & Human Performance"], "82": ["Training, Simulation & Human Performance", "Drones, Autonomy & Robotics"], "81": ["Space"], "80": ["Manufacturing & Supply Chain"], "79": ["AI, Software & Data"], "78": ["AI, Software & Data", "Space"], "76": ["AI, Software & Data", "Aerospace & Aviation"], "75": ["Ecosystem, Policy & Leadership"], "74": ["Capital & Finance"], "73": ["Training, Simulation & Human Performance"], "72": ["Weapons, Munitions & Defense Hardware", "Aerospace & Aviation"], "71": ["Drones, Autonomy & Robotics"], "69": ["Aerospace & Aviation"], "66": ["Manufacturing & Supply Chain", "Aerospace & Aviation"], "65": ["Drones, Autonomy & Robotics", "AI, Software & Data"], "64": ["Drones, Autonomy & Robotics"], "63": ["Manufacturing & Supply Chain"], "62": ["Manufacturing & Supply Chain"], "61": ["Space"], "60": ["AI, Software & Data"], "59": ["Ecosystem, Policy & Leadership"], "58": ["Space"], "56": ["Aerospace & Aviation"], "55": ["Aerospace & Aviation"], "54": ["Space", "AI, Software & Data"], "53": ["Drones, Autonomy & Robotics", "Aerospace & Aviation"], "52": ["Training, Simulation & Human Performance"], "51": ["Manufacturing & Supply Chain"], "50": ["Sensors, Comms & EW", "Drones, Autonomy & Robotics"], "49": ["Space", "Manufacturing & Supply Chain"], "48": ["Training, Simulation & Human Performance"], "47": ["Space"], "46": ["Aerospace & Aviation"], "45": ["Ecosystem, Policy & Leadership"], "44": ["Drones, Autonomy & Robotics"], "43": ["Space"], "42": ["Training, Simulation & Human Performance"], "41": ["Training, Simulation & Human Performance", "Aerospace & Aviation"], "40": ["AI, Software & Data"], "39": ["Drones, Autonomy & Robotics"], "35": ["Drones, Autonomy & Robotics", "AI, Software & Data"], "34": ["Aerospace & Aviation"], "33": ["Weapons, Munitions & Defense Hardware"], "31": ["Space", "Manufacturing & Supply Chain"], "30": ["Space"], "29": ["Space", "Sensors, Comms & EW"], "28": ["Space", "Manufacturing & Supply Chain"], "27": ["Space"], "25": ["Sensors, Comms & EW"], "24": ["Aerospace & Aviation", "AI, Software & Data"], "23": ["Energy & Power", "Manufacturing & Supply Chain"], "22": ["Space"], "20": ["Energy & Power"], "19": ["Manufacturing & Supply Chain"], "18": ["Ecosystem, Policy & Leadership"], "17": ["Manufacturing & Supply Chain"], "16": ["Ecosystem, Policy & Leadership"], "15": ["Drones, Autonomy & Robotics"], "14": ["Training, Simulation & Human Performance"], "13": ["Space"], "12": ["Manufacturing & Supply Chain"], "11": ["Aerospace & Aviation", "Space"], "10": ["Space"], "9": ["Training, Simulation & Human Performance"], "7": ["Manufacturing & Supply Chain", "Space"], "6": ["Space"], "5": ["Space"], "4": ["Manufacturing & Supply Chain"], "3": ["Space"], "2": ["Space"], "1": ["Sensors, Comms & EW"]};
+  // Published numbering moved Delta.g to EP 105; the catalog still lists it as 104.
+  EPISODE_INDUSTRIES['104'] = EPISODE_INDUSTRIES['105'] || [];
+  EPISODES.forEach(function(e){ e.industries = EPISODE_INDUSTRIES[String(e.ep)] || []; });
+
   // Initial render + wire up filter input
   renderDirectory('');
+  if (industrySelect) industrySelect.addEventListener('change', function(){ setIndustry(industrySelect.value); });
+  if (directoryIndustry) directoryIndustry.addEventListener('change', function(){ setIndustry(directoryIndustry.value); });
   var dirSearch = document.getElementById('directory-search');
   if (dirSearch) {
     dirSearch.addEventListener('input', function(ev) {
